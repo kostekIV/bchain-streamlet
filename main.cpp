@@ -1,6 +1,7 @@
 #include "streamlet.hpp"
 
 int main(int argc, char **argv) {
-    testFunction();
+    DummyNode node;
+    Message Message{0, 0, {}};
     return 0;
 }
