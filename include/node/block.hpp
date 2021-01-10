@@ -6,9 +6,9 @@
 
 
 struct Block : Hashable {
-    Block(hash_t parent_hash, unsigned epoch, std::string payload);
+    Block(hash_t parentHash, unsigned epoch, std::string payload);
 
-    const hash_t parent_hash;
+    const hash_t parentHash;
     const unsigned epoch;
     const std::string payload;
 

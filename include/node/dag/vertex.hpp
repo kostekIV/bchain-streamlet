@@ -22,5 +22,5 @@ private:
     const Hashable& content;
     const Vertex& parent;
     const unsigned depth;
-    mutable Status status;
+    mutable Status status = Status::PRESENT;
 };

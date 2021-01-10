@@ -3,48 +3,49 @@
 
 #define range(V) (V).begin(), (V).end()
 
-Dag::Dag(const Hashable& root_content, std::function<bool(std::vector<const Hashable*>)> finalize_predicate) :
-        root_hash(std::move(root_content.hash())),
-        finalize_predicate(std::move(finalize_predicate)) {
-    hv_mapping.emplace(root_hash, Vertex(root_content));
+Dag::Dag(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizePredicate) :
+        rootHash(std::move(rootContent.hash())),
+        finalizePredicate(std::move(finalizePredicate)) {
+    hvMapping.emplace(rootHash, Vertex(rootContent));
 }
 
 const Hashable& Dag::getDeepestLeaf() const {
-    auto argmax = std::max_element(range(hv_mapping), [](auto e1, auto e2) {
+    auto argmax = std::max_element(range(hvMapping), [](auto e1, auto e2) {
         return e1.second.getDepth() < e2.second.getDepth();
     });
     return argmax->second.getContent();
 }
 
 void Dag::addBelow(const Hashable& parent, const Hashable& child) {
-    const Vertex& parent_vertex = hv_mapping.at(parent.hash());
-    hash_t child_hash = child.hash();
-    hv_mapping.insert({child_hash, Vertex(child, parent_vertex)});
+    const Vertex& parentVertex = hvMapping.at(parent.hash());
+    hash_t childHash = child.hash();
+    hvMapping.insert({childHash, Vertex(child, parentVertex)});
 }
 
 void Dag::notarize(const Hashable& hashable) {
-    const Vertex& v = hv_mapping.at(hashable.hash());
+    const Vertex& v = hvMapping.at(hashable.hash());
     v.notarize();
-    tryFinalizeFrom(v);
+    tryFinalizeUntil(v);
 }
 
-void Dag::tryFinalizeFrom(const Vertex& v) {
-    auto path = getPathFrom(v);
+void Dag::tryFinalizeUntil(const Vertex& v) {
+    auto path = getPathFromRootTo(v);
     std::vector<const Hashable*> hashables;
     std::transform(range(path), hashables.begin(), [](auto v) { return &v->getContent(); });
-    if (finalize_predicate(hashables))
+    if (finalizePredicate(hashables))
         for (int i = 0; i < path.size() - 1; ++i)
             path[i]->finalize();
 }
 
-std::vector<const Vertex*> Dag::getPathFrom(const Vertex& v) const {
-    std::vector<const Vertex*> path;
+std::vector<const Vertex*> Dag::getPathFromRootTo(const Vertex& v) {
     auto current = &v, next = &current->getParent();
-    while (current != next) {
-        path.push_back(current);
+    std::vector<const Vertex*> path = {current};
+    do {
         current = next;
         next = &current->getParent();
-    }
+        path.push_back(current);
+    } while (current != next);
+    std::reverse(range(path));
     return path;
 }
 
@@ -52,7 +53,7 @@ void Dag::render() const {}
 
 std::vector<const Hashable*> Dag::getFinalizedChain() const {
     std::vector<const Vertex*> finalized;
-    for (const auto&[key, val] : hv_mapping)
+    for (const auto&[key, val] : hvMapping)
         if (val.getStatus() == Status::FINALIZED)
             finalized.push_back(&val);
     std::sort(range(finalized), [](auto u, auto v) {

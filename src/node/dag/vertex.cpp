@@ -1,3 +1,4 @@
+#include <cassert>
 #include "node/dag/vertex.hpp"
 
 Vertex::Vertex(const Hashable& content) :
@@ -18,6 +19,12 @@ unsigned Vertex::getDepth() const { return depth; }
 
 Status Vertex::getStatus() const { return status; }
 
-void Vertex::notarize() const { status = Status::NOTARIZED; }
+void Vertex::notarize() const {
+    assert(status == Status::PRESENT);
+    status = Status::NOTARIZED;
+}
 
-void Vertex::finalize() const { status = Status::FINALIZED; }
+void Vertex::finalize() const {
+    assert(status == Status::NOTARIZED or status == Status::FINALIZED);
+    status = Status::FINALIZED;
+}
