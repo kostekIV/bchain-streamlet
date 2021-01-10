@@ -1,6 +1,6 @@
 #pragma once
 
-#include <node/hashable.hpp>
+#include "node/hashable.hpp"
 #include "status.hpp"
 
 class Vertex {

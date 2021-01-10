@@ -1,6 +1,8 @@
 #include <node/dag/vertex.hpp>
 
-Vertex::Vertex(const Hashable& content, const Vertex& parent): content(content), parent(parent) {}
+Vertex::Vertex(const Hashable& content, const Vertex& parent) :
+        content(content),
+        parent(parent) {}
 
 const Hashable& Vertex::getContent() const { return content; }
 
