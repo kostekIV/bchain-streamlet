@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
-    name: Build
+    name: Test
     steps:
     - name: 1 - Checkout branch
       uses: actions/checkout@v2
@@ -26,3 +26,8 @@ jobs:
         cd build
         cmake ..
         make
+
+    - name: 4 - Run tests
+      run: |
+        cd build
+        ./tests
