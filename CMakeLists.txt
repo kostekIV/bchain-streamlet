@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(SOURCES
-    ${PROJECT_SOURCE_DIR}/src/streamlet.cpp
+    ${PROJECT_SOURCE_DIR}/src/dummy_node.cpp
+    ${PROJECT_SOURCE_DIR}/src/message.cpp
 )
 
 add_executable(streamlet main.cpp)
