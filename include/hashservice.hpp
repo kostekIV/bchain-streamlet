@@ -1,7 +1,7 @@
 class HashService{
-    int n;
+    unsigned int n;
 public:
-    HashService(int n);
+    HashService(unsigned int n);
 
-    int getLeader(int epoch);
+    int getLeader(unsigned int epoch);
 };
