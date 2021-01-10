@@ -12,6 +12,8 @@ public:
 
     const Vertex& getParent() const;
 
+    unsigned getDepth() const;
+
     Status getStatus() const;
     void notarize() const;
     void finalize() const;
@@ -19,5 +21,6 @@ public:
 private:
     const Hashable& content;
     const Vertex& parent;
+    const unsigned depth;
     mutable Status status;
 };
