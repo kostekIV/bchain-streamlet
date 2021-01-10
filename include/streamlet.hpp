@@ -5,3 +5,4 @@
 #include "node.hpp"
 #include "dummy_node.hpp"
 #include "scheduler.hpp"
+#include "simple_scheduler.hpp"

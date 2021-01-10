@@ -9,7 +9,7 @@ public:
     unsigned to() const;
     Content content() const;
 private:
-    unsigned fromNode;
-    unsigned toNode;
-    Content messageContent;
+    const unsigned fromNode;
+    const unsigned toNode;
+    const Content messageContent;
 };

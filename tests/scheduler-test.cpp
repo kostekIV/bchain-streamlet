@@ -5,12 +5,12 @@
 
 #include "message.hpp"
 #include "node.hpp"
-#include "scheduler.hpp"
+#include "simple_scheduler.hpp"
 
 struct TestNode: public INode {
 public:
     std::vector<Message> onMessageReceive(const Message& message) override {
-        return {Message{0, 0, {}}};
+        return {};
     }
     std::vector<Message> atTime(unsigned t) override {
         return {Message{0, 0, {}}};
@@ -22,7 +22,7 @@ TEST_CASE("Scheduler does not hangs") {
     for (unsigned i = 0; i < 10; i++) {
       nodes.emplace_back(std::make_unique<TestNode>());
     }
-    Scheduler sched(nodes);
+    SimpleScheduler sched(nodes);
     sched.start(10000);
 
     REQUIRE(true);
