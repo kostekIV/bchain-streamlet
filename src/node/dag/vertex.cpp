@@ -1,4 +1,8 @@
-#include <node/dag/vertex.hpp>
+#include "node/dag/vertex.hpp"
+
+Vertex::Vertex(const Hashable& content) :
+        content(content),
+        parent(*this) {}
 
 Vertex::Vertex(const Hashable& content, const Vertex& parent) :
         content(content),
@@ -10,4 +14,6 @@ const Vertex& Vertex::getParent() const { return parent; }
 
 Status Vertex::getStatus() const { return status; }
 
-void Vertex::setStatus(Status status) const { this->status = status; }
+void Vertex::notarize() const { status = Status::NOTARIZED; }
+
+void Vertex::finalize() const { status = Status::FINALIZED; }

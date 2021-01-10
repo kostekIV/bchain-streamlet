@@ -15,5 +15,5 @@ public:
     std::vector<Hashable> getFinalizedChain() const;
 
 private:
-    const Vertex& root;
+    const Vertex root;
 };

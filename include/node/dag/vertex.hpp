@@ -5,6 +5,7 @@
 
 class Vertex {
 public:
+    explicit Vertex(const Hashable& content);
     Vertex(const Hashable& content, const Vertex& parent);
 
     const Hashable& getContent() const;
@@ -12,7 +13,8 @@ public:
     const Vertex& getParent() const;
 
     Status getStatus() const;
-    void setStatus(Status status) const;
+    void notarize() const;
+    void finalize() const;
 
 private:
     const Hashable& content;
