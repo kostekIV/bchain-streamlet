@@ -12,7 +12,8 @@ set(SOURCES
         ${PROJECT_SOURCE_DIR}/src/content.cpp
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
-        ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp)
+        ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp
+        ${PROJECT_SOURCE_DIR}/src/scheduler.cpp)
 
 add_executable(streamlet main.cpp)
 target_include_directories(streamlet PRIVATE include)
@@ -30,8 +31,10 @@ set(TEST_SOURCES
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp
+        ${PROJECT_SOURCE_DIR}/src/scheduler.cpp
         tests/main.cpp
-        tests/example.cpp)
+        tests/example.cpp
+        tests/scheduler-test.cpp)
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)
