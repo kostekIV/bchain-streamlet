@@ -21,8 +21,6 @@ void SimpleScheduler::start(unsigned nrRounds) {
 void SimpleScheduler::clockTick() {
     broadcastTime();
 
-    // Responding to the first messagess
-    std::vector<Message> newMessages;
     while (!messages.empty()) {
         auto m = messages.front();
         messages.pop();
