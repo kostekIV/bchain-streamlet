@@ -6,6 +6,6 @@
 
 class DummyNode: public INode {
 public:
-    std::vector<Message> onMessageReceive(Message &message);
-    std::vector<Message> atTime(unsigned int t);
+    std::vector<Message> onMessageReceive(const Message& message) override;
+    std::vector<Message> atTime(unsigned t) override;
 };

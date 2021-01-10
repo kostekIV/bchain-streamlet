@@ -1,18 +1,18 @@
 #include "message.hpp"
 
-Message::Message(unsigned int from, unsigned int to, Content content):
+Message::Message(unsigned from, unsigned to, Content content):
     fromNode(from),
     toNode(to),
-    c(content) {}
+    messageContent(content) {}
 
-unsigned int Message::from() const {
+unsigned Message::from() const {
     return fromNode;
 }
 
-unsigned int Message::to() const {
+unsigned Message::to() const {
     return toNode;
 }
 
 Content Message::content() const {
-  return c;
+  return messageContent;
 }
