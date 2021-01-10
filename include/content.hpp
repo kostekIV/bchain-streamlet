@@ -1,6 +1,6 @@
 #pragma once
 
-#include "messagetype.hpp"
+#include "message_type.hpp"
 #include "node/block.hpp"
 
 struct Content {
