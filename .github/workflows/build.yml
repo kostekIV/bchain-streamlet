@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    name: Build
+    steps:
+    - name: 1 - Checkout branch
+      uses: actions/checkout@v2
+
+    - name: 2 - Get latest CMake
+      # Using 'latest' branch, the latest CMake is installed.
+      uses: lukka/get-cmake@latest
+
+    - name: 3 - Build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
