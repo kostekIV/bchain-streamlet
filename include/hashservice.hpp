@@ -1,7 +1,9 @@
-class HashService{
-    unsigned int n;
-public:
-    HashService(unsigned int n);
+#pragma once
 
-    int getLeader(unsigned int epoch);
+class HashService{
+    unsigned n;
+public:
+    HashService(unsigned n);
+
+    unsigned getLeader(unsigned epoch);
 };

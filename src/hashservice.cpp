@@ -1,5 +1,7 @@
 #include "hashservice.hpp"
 
-int HashService::getLeader(unsigned int epoch){
-    
+HashService::HashService(unsigned n) : n(n) {}
+
+unsigned HashService::getLeader(unsigned epoch){
+    return epoch % n;
 }
