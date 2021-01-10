@@ -9,6 +9,7 @@ set(SOURCES
         ${PROJECT_SOURCE_DIR}/src/hashservice.cpp
         ${PROJECT_SOURCE_DIR}/src/dummy_node.cpp
         ${PROJECT_SOURCE_DIR}/src/message.cpp
+        ${PROJECT_SOURCE_DIR}/src/content.cpp
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp)
@@ -22,7 +23,10 @@ target_include_directories(Catch INTERFACE tests)
 
 
 set(TEST_SOURCES
+        ${PROJECT_SOURCE_DIR}/src/hashservice.cpp
         ${PROJECT_SOURCE_DIR}/src/dummy_node.cpp
+        ${PROJECT_SOURCE_DIR}/src/message.cpp
+        ${PROJECT_SOURCE_DIR}/src/content.cpp
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
         ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp
