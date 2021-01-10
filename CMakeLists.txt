@@ -6,9 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(SOURCES
-    ${PROJECT_SOURCE_DIR}/src/dummy_node.cpp
-    ${PROJECT_SOURCE_DIR}/src/message.cpp
-)
+        ${PROJECT_SOURCE_DIR}/src/dummy_node.cpp
+        ${PROJECT_SOURCE_DIR}/src/message.cpp
+        ${PROJECT_SOURCE_DIR}/src/streamlet.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/block.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp)
 
 add_executable(streamlet main.cpp)
 target_include_directories(streamlet PRIVATE include)
