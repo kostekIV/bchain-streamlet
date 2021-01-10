@@ -19,6 +19,6 @@ private:
     std::queue<Message> messages;
 
     void clockTick();
-    std::vector<Message> sendMessage(const Message& message);
+    std::vector<Message> sendRec(const Message& message);
     void broadcastTime();
 };

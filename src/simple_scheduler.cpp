@@ -26,7 +26,7 @@ void SimpleScheduler::clockTick() {
     while (!messages.empty()) {
         auto m = messages.front();
         messages.pop();
-        auto ms = sendMessage(m);
+        auto ms = sendRec(m);
         for (auto& x: ms) {
             messages.push(x);
         }
@@ -44,7 +44,7 @@ void SimpleScheduler::broadcastTime() {
 }
 
 
-std::vector<Message> SimpleScheduler::sendMessage(const Message& message) {
+std::vector<Message> SimpleScheduler::sendRec(const Message& message) {
     unsigned n = nodes.size();
     if (check_range(0u, n - 1, message.from()) or check_range(0u, n - 1, message.to())) {
         // ToDo add logging
