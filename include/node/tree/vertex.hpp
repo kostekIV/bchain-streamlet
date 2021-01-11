@@ -5,7 +5,10 @@
 
 class Vertex {
 public:
-    explicit Vertex(const Hashable& content);
+    Vertex(const Hashable& content);
+
+    Vertex& operator=(const Vertex&) = delete;
+
     Vertex(const Hashable& content, const Vertex& parent);
 
     const Hashable& getContent() const;
@@ -15,7 +18,9 @@ public:
     unsigned getDepth() const;
 
     Status getStatus() const;
+
     void notarize() const;
+
     void finalize() const;
 
 private:

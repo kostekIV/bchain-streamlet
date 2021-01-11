@@ -25,9 +25,13 @@ public:
 
 private:
     void tryFinalizeUntil(const Vertex& v);
+
     static vertices_t getPathFromRootTo(const Vertex& v);
+
+    static bool isRoot(const Vertex& v);
 
     const pred_t finalizationPredicate;
     const hash_t rootHash;
     std::unordered_map<hash_t, const Vertex> hvMapping;
+    std::reference_wrapper<const Vertex> deepestNotarized, deepestFinalized;
 };

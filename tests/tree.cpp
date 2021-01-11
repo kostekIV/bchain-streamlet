@@ -12,18 +12,18 @@ struct TestHashable : Hashable {
 
     TestHashable(int id) : id(id) {}
 
-    TestHashable &operator=(const TestHashable &) = delete;
+    TestHashable& operator=(const TestHashable&) = delete;
 
-    TestHashable(const TestHashable &) = delete;
+    TestHashable(const TestHashable&) = delete;
 
     hash_t hash() const override { return std::to_string(id); }
 };
 
-const TestHashable &castFromHashable(const std::reference_wrapper<const Hashable> &ref) {
+const TestHashable& castFromHashable(const std::reference_wrapper<const Hashable>& ref) {
     return *dynamic_cast<const TestHashable *>(&ref.get());
 }
 
-bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>> &blocks) {
+bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks) {
     size_t len = blocks.size();
     if (len < 3) return false;
     int a = castFromHashable(blocks[len - 3]).id;
@@ -33,10 +33,6 @@ bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashab
 }
 
 struct TreeTestFixture {
-    TreeTestFixture() {
-        tree.notarize(genesisBlock);
-    }
-
     void createPath(int len, int beginBlock = 0) {
         tree.addBelow(genesisBlock, blocks[beginBlock]);
         for (int i = beginBlock + 1; i < beginBlock + len; ++i)
@@ -72,7 +68,7 @@ TEST_CASE_METHOD(TreeTestFixture, "creation") {
 
     SECTION("path1") {
         for (int i = 0; i < 5; ++i) {
-            const TestHashable &leaf = (const TestHashable &) tree.getDeepestNotarized();
+            const TestHashable& leaf = (const TestHashable&) tree.getDeepestNotarized();
             REQUIRE(leaf.hash() == std::to_string(i - 1));
             tree.addBelow(leaf, blocks[i]);
             tree.notarize(blocks[i]);
@@ -97,12 +93,16 @@ TEST_CASE_METHOD(TreeTestFixture, "creation") {
 }
 
 TEST_CASE_METHOD(TreeTestFixture, "finalization") {
+    SECTION("root is finalized") {
+        REQUIRE(tree.getFinalizedChain().size() == 1);
+    }
+
     SECTION("no finalization (length)") {
         createPath(1);
-        REQUIRE(tree.getFinalizedChain().empty());
+        REQUIRE(tree.getFinalizedChain().size() == 1);
 
         tree.notarize(blocks[0]);
-        REQUIRE(tree.getFinalizedChain().empty());
+        REQUIRE(tree.getFinalizedChain().size() == 1);
     }
 
     SECTION("no finalization (predicate)") {
@@ -111,7 +111,7 @@ TEST_CASE_METHOD(TreeTestFixture, "finalization") {
 
         tree.notarize(blocks[2]);
         tree.notarize(blocks[3]);
-        REQUIRE(tree.getFinalizedChain().empty());
+        REQUIRE(tree.getFinalizedChain().size() == 1);
     }
 
     SECTION("finalization (simple)") {
