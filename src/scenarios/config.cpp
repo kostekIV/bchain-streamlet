@@ -20,7 +20,7 @@ ScenarioConfig::ScenarioConfig(std::string configFile) {
 
     honestNodesCount = config["honest-nodes"].as<unsigned>();
     dummyNodesCount = config["dummy-nodes"].as<unsigned>();
-    bitchNodesCount = config["bitch-nodes"].as<unsigned>();
+    dishonestNodesCount = config["dishonest-nodes"].as<unsigned>();
 
     schedulerType = get_scheduler(config["scheduler-type"].as<std::string>());
 }
@@ -39,8 +39,8 @@ unsigned ScenarioConfig::getHonestNodesCount() const {
 unsigned ScenarioConfig::getDummyNodesCount() const {
     return dummyNodesCount;
 }
-unsigned ScenarioConfig::getBitchNodesCount() const {
-    return bitchNodesCount;
+unsigned ScenarioConfig::getDishonestNodesCount() const {
+    return dishonestNodesCount;
 }
 
 SchedulerType ScenarioConfig::getSchedulerType() const {

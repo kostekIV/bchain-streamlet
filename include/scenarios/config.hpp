@@ -14,7 +14,7 @@ public:
 
     unsigned getHonestNodesCount() const;
     unsigned getDummyNodesCount() const;
-    unsigned getBitchNodesCount() const;
+    unsigned getDishonestNodesCount() const;
 
     SchedulerType getSchedulerType() const;
 private:
@@ -23,7 +23,7 @@ private:
 
     unsigned honestNodesCount;
     unsigned dummyNodesCount;
-    unsigned bitchNodesCount;
+    unsigned dishonestNodesCount;
 
     SchedulerType schedulerType;
 };

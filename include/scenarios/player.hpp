@@ -18,7 +18,7 @@ private:
 
     const unsigned honestNodesCount;
     const unsigned dummyNodesCount;
-    const unsigned bitchNodesCount;
+    const unsigned dishonestNodesCount;
 
     const SchedulerType schedulerType;
 };

@@ -11,6 +11,6 @@ TEST_CASE("Config has correct values") {
     REQUIRE(config.getNrOfRounds() == 10);
     REQUIRE(config.getHonestNodesCount() == 10);
     REQUIRE(config.getDummyNodesCount() == 10);
-    REQUIRE(config.getBitchNodesCount() == 10);
+    REQUIRE(config.getDishonestNodesCount() == 10);
     REQUIRE(config.getSchedulerType() == SchedulerType::SIMPLE);
 }

@@ -25,7 +25,7 @@ Player::Player(const ScenarioConfig& config):
     nrOfRounds(config.getNrOfRounds()),
     honestNodesCount(config.getHonestNodesCount()),
     dummyNodesCount(config.getDummyNodesCount()),
-    bitchNodesCount(config.getBitchNodesCount()),
+    dishonestNodesCount(config.getDishonestNodesCount()),
     schedulerType(config.getSchedulerType()) {}
 
 void Player::summary() {
@@ -36,7 +36,7 @@ void Player::summary() {
     summary << "* Scheduler used: " << schedulerType << std::endl;
     summary << "* Honest nodes count: " << honestNodesCount << std::endl;
     summary << "* Dummy nodes count:  " << dummyNodesCount << std::endl;
-    summary << "* Bitch nodes count:  " << bitchNodesCount << std::endl;
+    summary << "* Dishonest nodes count:  " << dishonestNodesCount << std::endl;
 
     std::cout << summary.str();
 }
@@ -50,7 +50,7 @@ std::vector<std::unique_ptr<INode>> Player::play() {
     for (unsigned i = 0; i < dummyNodesCount; i++) {
         allNodes.emplace_back(std::make_unique<DummyNode>());
     }
-    for (unsigned i = 0; i < bitchNodesCount; i++) {
+    for (unsigned i = 0; i < dishonestNodesCount; i++) {
         // ToDo initialize
     }
     std::unique_ptr<IScheduler> scheduler = get_scheduler(schedulerType, allNodes);

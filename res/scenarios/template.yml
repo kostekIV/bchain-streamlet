@@ -2,5 +2,5 @@ scenario-name: "scenario-name"
 rounds: 0
 honest-nodes: 0
 dummy-nodes: 0
-bitch-nodes: 0
+dishonest-nodes: 0
 scheduler-type: "simple"
