@@ -12,21 +12,24 @@ struct TestHashable : Hashable {
 
     TestHashable(int id) : id(id) {}
 
-    TestHashable& operator=(const TestHashable&) = delete;
-    TestHashable(const TestHashable&) = delete;
+    TestHashable &operator=(const TestHashable &) = delete;
+
+    TestHashable(const TestHashable &) = delete;
 
     hash_t hash() const override { return std::to_string(id); }
 };
 
-bool finalizationPredicate(const std::vector<const Hashable*>& blocks) {
-    if (blocks.empty()) return false;
-    std::vector<const TestHashable*> casted;
-    std::for_each(range(blocks), [&casted](auto h) { casted.push_back(dynamic_cast<const TestHashable*>(h)); });
-    size_t len = casted.size();
-    int lastId = casted[len - 1]->id;
-    return len >= 3 and
-           casted[len - 2]->id == lastId - 1 and
-           casted[len - 3]->id == lastId - 2;
+const TestHashable &castFromHashable(const std::reference_wrapper<const Hashable> &ref) {
+    return *dynamic_cast<const TestHashable *>(&ref.get());
+}
+
+bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>> &blocks) {
+    size_t len = blocks.size();
+    if (len < 3) return false;
+    int a = castFromHashable(blocks[len - 3]).id;
+    int b = castFromHashable(blocks[len - 2]).id;
+    int c = castFromHashable(blocks[len - 1]).id;
+    return a + 1 == b and b + 1 == c;
 }
 
 struct TreeTestFixture {
@@ -69,7 +72,7 @@ TEST_CASE_METHOD(TreeTestFixture, "creation") {
 
     SECTION("path1") {
         for (int i = 0; i < 5; ++i) {
-            const TestHashable& leaf = (const TestHashable&) tree.getDeepestNotarized();
+            const TestHashable &leaf = (const TestHashable &) tree.getDeepestNotarized();
             REQUIRE(leaf.hash() == std::to_string(i - 1));
             tree.addBelow(leaf, blocks[i]);
             tree.notarize(blocks[i]);
@@ -120,7 +123,7 @@ TEST_CASE_METHOD(TreeTestFixture, "finalization") {
         REQUIRE(chain.size() == 4);
 
         for (int i = 0; i < 4; ++i)
-            REQUIRE(chain[i]->hash() == std::to_string(i - 1));
+            REQUIRE(chain[i].get().hash() == std::to_string(i - 1));
     }
 
     SECTION("finalization (predicate on suffix)") {
