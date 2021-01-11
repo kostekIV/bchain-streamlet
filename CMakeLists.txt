@@ -35,7 +35,6 @@ set(TEST_SOURCES
         ${PROJECT_SOURCE_DIR}/src/node/tree/tree.cpp
         ${PROJECT_SOURCE_DIR}/src/node/tree/vertex.cpp
         tests/main.cpp
-        tests/example.cpp
         tests/scheduler-test.cpp
         tests/tree.cpp)
 
