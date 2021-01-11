@@ -5,9 +5,9 @@
 #include <unordered_map>
 #include "vertex.hpp"
 
-class Dag {
+class Tree {
 public:
-    Dag(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizePredicate);
+    Tree(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizePredicate);
 
     const Hashable& getDeepestNotarized() const;
 
