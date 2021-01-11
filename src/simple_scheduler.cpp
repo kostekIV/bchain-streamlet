@@ -6,6 +6,13 @@ namespace {
     bool check_range(T start, T end, T val) {
         return start <= val and val <= end;
     }
+
+    template <typename T>
+    void push_to_queue(std::queue<T>& q, std::vector<T>&& v) {
+        for (auto& x: v) {
+            q.push(x);
+        }
+    }
 }
 
 SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes):
@@ -18,16 +25,17 @@ void SimpleScheduler::start(unsigned nrRounds) {
     }
 }
 
+const std::vector<std::unique_ptr<INode>>& SimpleScheduler::getNodes() const {
+    return this->nodes;
+}
+
 void SimpleScheduler::clockTick() {
     broadcastTime();
 
     while (!messages.empty()) {
         auto m = messages.front();
         messages.pop();
-        auto ms = sendRec(m);
-        for (auto& x: ms) {
-            messages.push(x);
-        }
+        push_to_queue(messages, sendRec(m));
     }
 
     timeSinceStart++;
@@ -35,16 +43,14 @@ void SimpleScheduler::clockTick() {
 
 void SimpleScheduler::broadcastTime() {
     for (auto& n: nodes) {
-        for (const auto& m: n->atTime(timeSinceStart)) {
-            messages.push(m);
-        }
+        push_to_queue(messages, n->atTime(timeSinceStart));
     }
 }
 
 
 std::vector<Message> SimpleScheduler::sendRec(const Message& message) {
     unsigned n = nodes.size();
-    if (check_range(0u, n - 1, message.from()) or check_range(0u, n - 1, message.to())) {
+    if (not check_range(0u, n - 1, message.from()) or not check_range(0u, n - 1, message.to())) {
         // ToDo add logging
         return std::vector<Message>{};
     }
