@@ -3,13 +3,13 @@
 
 Vertex::Vertex(const Hashable& content) :
         content(content),
-        parent(*this),
-        depth(0) {}
+        depth(0),
+        parent(*this) {}
 
 Vertex::Vertex(const Hashable& content, const Vertex& parent) :
         content(content),
-        parent(parent),
-        depth(parent.depth + 1) {}
+        depth(parent.depth + 1),
+        parent(parent) {}
 
 const Hashable& Vertex::getContent() const { return content; }
 

@@ -9,7 +9,7 @@ class Dag {
 public:
     Dag(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizePredicate);
 
-    const Hashable& getDeepestLeaf() const;
+    const Hashable& getDeepestNotarized() const;
 
     void addBelow(const Hashable& parent, const Hashable& child);
 
@@ -21,9 +21,9 @@ public:
 
 private:
     void tryFinalizeUntil(const Vertex& v);
-    static std::vector<const Vertex*> getPathFromRootTo(const Vertex& v) ;
+    static std::vector<const Vertex*> getPathFromRootTo(const Vertex& v);
 
-    const std::function<bool(std::vector<const Hashable*>)> finalizePredicate;
+    const std::function<bool(std::vector<const Hashable*>)> finalizationPredicate;
     const hash_t rootHash;
     std::unordered_map<hash_t, const Vertex> hvMapping;
 };

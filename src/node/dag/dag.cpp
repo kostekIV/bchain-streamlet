@@ -1,19 +1,22 @@
 #include <algorithm>
+#include <utility>
+#include <iostream>
 #include "node/dag/dag.hpp"
 
 #define range(V) (V).begin(), (V).end()
 
-Dag::Dag(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizePredicate) :
+Dag::Dag(const Hashable& rootContent, std::function<bool(std::vector<const Hashable*>)> finalizationPredicate) :
         rootHash(std::move(rootContent.hash())),
-        finalizePredicate(std::move(finalizePredicate)) {
+        finalizationPredicate(std::move(finalizationPredicate)) {
     hvMapping.emplace(rootHash, Vertex(rootContent));
 }
 
-const Hashable& Dag::getDeepestLeaf() const {
-    auto argmax = std::max_element(range(hvMapping), [](auto e1, auto e2) {
-        return e1.second.getDepth() < e2.second.getDepth();
-    });
-    return argmax->second.getContent();
+const Hashable& Dag::getDeepestNotarized() const {
+    const Vertex* best = &hvMapping.at(rootHash);
+    for (const auto&[key, val] : hvMapping)
+        if (val.getStatus() == Status::NOTARIZED and val.getDepth() > best->getDepth())
+            best = &val;
+    return best->getContent();
 }
 
 void Dag::addBelow(const Hashable& parent, const Hashable& child) {
@@ -31,20 +34,20 @@ void Dag::notarize(const Hashable& hashable) {
 void Dag::tryFinalizeUntil(const Vertex& v) {
     auto path = getPathFromRootTo(v);
     std::vector<const Hashable*> hashables;
-    std::transform(range(path), hashables.begin(), [](auto v) { return &v->getContent(); });
-    if (finalizePredicate(hashables))
+    std::for_each(range(path), [&hashables](auto v) { hashables.push_back(&v->getContent()); });
+    if (finalizationPredicate(hashables))
         for (int i = 0; i < path.size() - 1; ++i)
             path[i]->finalize();
 }
 
 std::vector<const Vertex*> Dag::getPathFromRootTo(const Vertex& v) {
-    auto current = &v, next = &current->getParent();
+    auto current = &v;
     std::vector<const Vertex*> path = {current};
+    if (current->getDepth() == 0) return path;
     do {
-        current = next;
-        next = &current->getParent();
+        current = &current->getParent();
         path.push_back(current);
-    } while (current != next);
+    } while (current->getDepth() > 0);
     std::reverse(range(path));
     return path;
 }
@@ -61,8 +64,6 @@ std::vector<const Hashable*> Dag::getFinalizedChain() const {
     });
 
     std::vector<const Hashable*> result;
-    std::transform(range(finalized), result.begin(), [](auto v) {
-        return &v->getContent();
-    });
+    std::for_each(range(finalized), [&result](auto v) { result.push_back(&v->getContent()); });
     return result;
 }
