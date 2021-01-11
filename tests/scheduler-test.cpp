@@ -18,7 +18,7 @@ public:
     }
     std::vector<Message> atTime(unsigned t) override {
         this->atTimeCount += 1;
-        return {Message{0, 0, {}}};
+        return {Message{0, 0, {MessageType::PROPOSAL, {"", 0, ""}}}};
     }
 
     ~TestNode() {}
