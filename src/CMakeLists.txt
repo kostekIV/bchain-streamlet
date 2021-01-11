@@ -8,5 +8,6 @@ target_sources(tests PRIVATE ${SOURCES})
 
 add_subdirectory(message)
 add_subdirectory(node)
+add_subdirectory(scenarios)
 add_subdirectory(scheduler)
 add_subdirectory(state)

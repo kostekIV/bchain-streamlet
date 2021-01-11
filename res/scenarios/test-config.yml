@@ -1,0 +1,6 @@
+scenario-name: "Test Config"
+rounds: 10
+honest-nodes: 10
+dummy-nodes: 10
+bitch-nodes: 10
+scheduler-type: "simple"

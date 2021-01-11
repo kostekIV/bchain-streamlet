@@ -1,0 +1,6 @@
+scenario-name: "All nodes are dummy nodes"
+rounds: 1000
+honest-nodes: 0
+dummy-nodes: 100
+bitch-nodes: 0
+scheduler-type: "simple"
