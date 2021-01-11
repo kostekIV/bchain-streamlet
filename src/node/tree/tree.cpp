@@ -33,16 +33,16 @@ void Tree::notarize(const Hashable &hashable) {
 
 void Tree::tryFinalizeUntil(const Vertex &v) {
     auto path = getPathFromRootTo(v);
-    std::vector<std::reference_wrapper<const Hashable>> hashables;
+    hashables_t hashables;
     std::for_each(range(path), [&hashables](auto v) { hashables.push_back(std::cref(v.get().getContent())); });
     if (finalizationPredicate(hashables))
         for (int i = 0; i < path.size() - 1; ++i)
             path[i].get().finalize();
 }
 
-std::vector<std::reference_wrapper<const Vertex>> Tree::getPathFromRootTo(const Vertex &v) {
+Tree::vertices_t Tree::getPathFromRootTo(const Vertex &v) {
     auto current = std::cref(v);
-    std::vector<std::reference_wrapper<const Vertex>> path = {current};
+    vertices_t path = {current};
     if (current.get().getDepth() == 0) return path;
     do {
         current = current.get().getParent();
@@ -54,8 +54,8 @@ std::vector<std::reference_wrapper<const Vertex>> Tree::getPathFromRootTo(const 
 
 void Tree::render() const {}
 
-std::vector<std::reference_wrapper<const Hashable>> Tree::getFinalizedChain() const {
-    std::vector<std::reference_wrapper<const Vertex>> finalized;
+Tree::hashables_t Tree::getFinalizedChain() const {
+    vertices_t finalized;
     for (const auto&[key, val] : hvMapping)
         if (val.getStatus() == Status::FINALIZED)
             finalized.push_back(val);
@@ -63,7 +63,7 @@ std::vector<std::reference_wrapper<const Hashable>> Tree::getFinalizedChain() co
         return u.get().getDepth() < v.get().getDepth();
     });
 
-    std::vector<std::reference_wrapper<const Hashable>> result;
+    hashables_t result;
     std::for_each(range(finalized), [&result](auto v) { result.push_back(v.get().getContent()); });
     return result;
 }

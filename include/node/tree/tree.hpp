@@ -6,7 +6,10 @@
 #include "vertex.hpp"
 
 class Tree {
-    using pred_t = std::function<bool(std::vector<std::reference_wrapper<const Hashable>>)>;
+private:
+    using vertices_t = std::vector<std::reference_wrapper<const Vertex>>;
+    using hashables_t = std::vector<std::reference_wrapper<const Hashable>>;
+    using pred_t = std::function<bool(hashables_t)>;
 public:
     Tree(const Hashable& rootContent, pred_t finalizePredicate);
 
@@ -16,13 +19,13 @@ public:
 
     void notarize(const Hashable& hashable);
 
-    std::vector<std::reference_wrapper<const Hashable>> getFinalizedChain() const;
+    hashables_t getFinalizedChain() const;
 
     void render() const;
 
 private:
     void tryFinalizeUntil(const Vertex& v);
-    static std::vector<std::reference_wrapper<const Vertex>> getPathFromRootTo(const Vertex& v);
+    static vertices_t getPathFromRootTo(const Vertex& v);
 
     const pred_t finalizationPredicate;
     const hash_t rootHash;
