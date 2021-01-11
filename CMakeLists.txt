@@ -11,8 +11,8 @@ set(SOURCES
         ${PROJECT_SOURCE_DIR}/src/message.cpp
         ${PROJECT_SOURCE_DIR}/src/content.cpp
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
-        ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
-        ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/tree/tree.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/tree/vertex.cpp
         ${PROJECT_SOURCE_DIR}/src/simple_scheduler.cpp
         ${PROJECT_SOURCE_DIR}/src/node.cpp)
 
@@ -30,13 +30,13 @@ set(TEST_SOURCES
         ${PROJECT_SOURCE_DIR}/src/message.cpp
         ${PROJECT_SOURCE_DIR}/src/content.cpp
         ${PROJECT_SOURCE_DIR}/src/node/block.cpp
-        ${PROJECT_SOURCE_DIR}/src/node/dag/dag.cpp
-        ${PROJECT_SOURCE_DIR}/src/node/dag/vertex.cpp
         ${PROJECT_SOURCE_DIR}/src/simple_scheduler.cpp
         ${PROJECT_SOURCE_DIR}/src/node.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/tree/tree.cpp
+        ${PROJECT_SOURCE_DIR}/src/node/tree/vertex.cpp
         tests/main.cpp
-        tests/example.cpp
-        tests/scheduler-test.cpp)
+        tests/scheduler-test.cpp
+        tests/tree.cpp)
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)
