@@ -20,6 +20,8 @@ public:
         this->atTimeCount += 1;
         return {Message{0, 0, {}}};
     }
+
+    ~TestNode() {}
 };
 
 TEST_CASE("Scheduler does not hangs") {
