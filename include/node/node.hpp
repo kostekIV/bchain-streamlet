@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "message.hpp"
+#include "message/message.hpp"
 
 class INode {
 public:

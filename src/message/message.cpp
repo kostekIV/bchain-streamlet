@@ -1,4 +1,4 @@
-#include "message.hpp"
+#include "message/message.hpp"
 
 Message::Message(unsigned from, unsigned to, Content content):
     fromNode(from),

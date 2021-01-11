@@ -2,8 +2,8 @@
 
 #include <array>
 
-#include "node/hashable.hpp"
-#include "node/tree/tree.hpp"
+#include "state/hashable.hpp"
+#include "state/tree/tree.hpp"
 
 #define range(V) (V).begin(), (V).end()
 

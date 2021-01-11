@@ -1,6 +1,6 @@
 #pragma once
 
-#include "content.hpp"
+#include "message/content.hpp"
 
 class Message {
 public:

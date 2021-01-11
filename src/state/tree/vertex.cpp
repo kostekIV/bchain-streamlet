@@ -1,5 +1,5 @@
 #include <cassert>
-#include "node/tree/vertex.hpp"
+#include "state/tree/vertex.hpp"
 
 Vertex::Vertex(const Hashable& content) :
         content(content),

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "content.hpp"
-#include "message.hpp"
-#include "node.hpp"
-#include "dummy_node.hpp"
-#include "scheduler.hpp"
-#include "simple_scheduler.hpp"
+#include "message/content.hpp"
+#include "message/message.hpp"
+#include "node/node.hpp"
+#include "node/dummy_node.hpp"
+#include "scheduler/scheduler.hpp"
+#include "scheduler/simple_scheduler.hpp"
