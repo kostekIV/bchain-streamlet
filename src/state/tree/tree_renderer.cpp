@@ -40,4 +40,3 @@ void TreeRenderer::renderEdges() {
         description << "\t" << currentLabel << "->" << parentLabel << "\n";
     }
 }
-
