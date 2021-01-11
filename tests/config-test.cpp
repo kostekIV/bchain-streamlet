@@ -1,9 +1,5 @@
 #include "catch2.hpp"
 
-#include <vector>
-#include <memory>
-#include<iostream>
-
 #include "scenarios/config.hpp"
 #include "scenarios/scheduler_type.hpp"
 
