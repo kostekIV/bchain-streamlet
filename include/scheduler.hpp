@@ -1,9 +1,7 @@
 #pragma once
 
-#include <vector>
-
-#include "node.hpp"
-#include "message.hpp"
 
 class IScheduler {
+public:
+    virtual void start(unsigned nrRounds) = 0;
 };

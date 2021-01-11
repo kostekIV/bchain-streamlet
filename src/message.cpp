@@ -14,5 +14,5 @@ unsigned Message::to() const {
 }
 
 Content Message::content() const {
-  return messageContent;
+    return messageContent;
 }
