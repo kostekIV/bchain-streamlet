@@ -6,7 +6,7 @@
 
 class ScenarioConfig {
 public:
-    ScenarioConfig(std::string configFile);
+    explicit ScenarioConfig(std::string configFile);
 
     std::string getScenarioName() const;
 

@@ -18,7 +18,7 @@ set(TEST_SOURCES
         tests/scheduler-test.cpp
         tests/tree.cpp
         tests/config-test.cpp
-        tests/player-test.cpp)
+        tests/runner-test.cpp)
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)

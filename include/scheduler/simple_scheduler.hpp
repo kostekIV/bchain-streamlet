@@ -13,7 +13,7 @@ class SimpleScheduler: public IScheduler {
 public:
     SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes);
     void start(unsigned nrRounds) override;
-    std::vector<std::unique_ptr<INode>> retrieveNodes() override;
+    std::vector<std::unique_ptr<INode>> takeOverNodes() override;
     const std::vector<std::unique_ptr<INode>>& getNodes() const;
     ~SimpleScheduler() = default;
 private:

@@ -7,9 +7,9 @@
 #include "scenarios/config.hpp"
 #include "scenarios/scheduler_type.hpp"
 
-class Player {
+class Runner {
 public:
-    Player(const ScenarioConfig& config);
+    Runner(const ScenarioConfig& config);
     std::vector<std::unique_ptr<INode>> play();
     void summary();
 private:

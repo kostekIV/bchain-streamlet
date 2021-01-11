@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "scenarios/player.hpp"
+#include "scenarios/runner.hpp"
 
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
@@ -20,7 +20,7 @@ namespace {
     }
 }
 
-Player::Player(const ScenarioConfig& config):
+Runner::Runner(const ScenarioConfig& config):
     scenarioName(config.getScenarioName()),
     nrOfRounds(config.getNrOfRounds()),
     honestNodesCount(config.getHonestNodesCount()),
@@ -28,7 +28,7 @@ Player::Player(const ScenarioConfig& config):
     dishonestNodesCount(config.getDishonestNodesCount()),
     schedulerType(config.getSchedulerType()) {}
 
-void Player::summary() {
+void Runner::summary() {
     std::ostringstream summary;
     summary << "Scenario Name: " << scenarioName << std::endl;
     summary << "Scenario will play for " << nrOfRounds << " rounds" << std::endl;
@@ -41,7 +41,7 @@ void Player::summary() {
     std::cout << summary.str();
 }
 
-std::vector<std::unique_ptr<INode>> Player::play() {
+std::vector<std::unique_ptr<INode>> Runner::play() {
     std::vector<std::unique_ptr<INode>> allNodes;
 
     for (unsigned i = 0; i < honestNodesCount; i++) {
@@ -58,5 +58,5 @@ std::vector<std::unique_ptr<INode>> Player::play() {
     // End of scenario initialization
     scheduler->start(nrOfRounds);
 
-    return scheduler->retrieveNodes();
+    return scheduler->takeOverNodes();
 }

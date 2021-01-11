@@ -30,7 +30,7 @@ const std::vector<std::unique_ptr<INode>>& SimpleScheduler::getNodes() const {
 }
 
 
-std::vector<std::unique_ptr<INode>> SimpleScheduler::retrieveNodes() {
+std::vector<std::unique_ptr<INode>> SimpleScheduler::takeOverNodes() {
     return std::move(this->nodes);
 }
 

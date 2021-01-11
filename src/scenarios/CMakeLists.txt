@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13.0)
 
 
 set(SOURCES
-        player.cpp
+        runner.cpp
         config.cpp)
 
 target_sources(streamlet PRIVATE ${SOURCES})
