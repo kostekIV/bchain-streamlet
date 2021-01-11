@@ -1,4 +1,4 @@
-#include "dummy_node.hpp"
+#include "node/dummy_node.hpp"
 
 
 std::vector<Message> DummyNode::onMessageReceive(const Message& message) {

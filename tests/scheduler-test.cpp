@@ -4,9 +4,9 @@
 #include <memory>
 #include<iostream>
 
-#include "message.hpp"
-#include "node.hpp"
-#include "simple_scheduler.hpp"
+#include "message/message.hpp"
+#include "node/node.hpp"
+#include "scheduler/simple_scheduler.hpp"
 
 struct TestNode: public INode {
 public:

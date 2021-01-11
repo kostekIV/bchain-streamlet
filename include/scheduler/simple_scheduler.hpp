@@ -4,9 +4,9 @@
 #include <vector>
 #include <queue>
 
-#include "node.hpp"
-#include "message.hpp"
-#include "scheduler.hpp"
+#include "node/node.hpp"
+#include "message/message.hpp"
+#include "scheduler/scheduler.hpp"
 
 
 class SimpleScheduler: public IScheduler {

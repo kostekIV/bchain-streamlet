@@ -1,7 +1,7 @@
 #pragma once
 
-#include "message_type.hpp"
-#include "node/block.hpp"
+#include "message/message_type.hpp"
+#include "state/block.hpp"
 
 struct Content {
     const MessageType messageType;

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "node.hpp"
+#include "node/node.hpp"
 
 class DummyNode: public INode {
 public:

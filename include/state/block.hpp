@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hashable.hpp"
+#include "state/hashable.hpp"
 
 
 struct Block : Hashable {
