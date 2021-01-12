@@ -29,6 +29,11 @@ const std::vector<std::unique_ptr<INode>>& SimpleScheduler::getNodes() const {
     return this->nodes;
 }
 
+
+std::vector<std::unique_ptr<INode>> SimpleScheduler::takeOverNodes() {
+    return std::move(this->nodes);
+}
+
 void SimpleScheduler::clockTick() {
     broadcastTime();
 

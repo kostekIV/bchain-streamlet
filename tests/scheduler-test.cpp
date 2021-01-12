@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <memory>
-#include<iostream>
 
 #include "message/message.hpp"
 #include "node/node.hpp"
