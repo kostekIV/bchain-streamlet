@@ -8,7 +8,7 @@
 #define range(V) (V).begin(), (V).end()
 
 namespace {
-    void checkAndLogError(std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
+    void checkAndLogError(const std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
         if (hvMapping.find(key) == hvMapping.end()) {
             LOG(ERROR) << "No key " << key << "in tree map";
         }
@@ -39,6 +39,7 @@ void Tree::addBelow(const Hashable& parent, const Hashable& child) { addBelow(pa
 
 void Tree::addBelow(const hash_t& parentHash, const Hashable& child) {
     LOG(DEBUG) << "[TREE]: " << "addBelow parent with hash " << parentHash << " child with hash " << child.hash();
+    checkAndLogError(hvMapping, parentHash);
     const Vertex& parentVertex = hvMapping.at(parentHash);
     hash_t childHash = child.hash();
     hvMapping.try_emplace(childHash, child, parentVertex);
@@ -88,6 +89,7 @@ bool Tree::isDeepestNotarized(const Hashable& hashable) const { return isDeepest
 
 bool Tree::isDeepestNotarized(const hash_t& hash) const {
     LOG(DEBUG) << "[TREE]: " << "check whether " << hash << " is one of the deepest notarized";
+    checkAndLogError(hvMapping, hash);
     const auto& v = hvMapping.at(hash);
     return v.getStatus() != Status::PRESENT and v.getDepth() == deepestNotarized.get().getDepth();
 }
