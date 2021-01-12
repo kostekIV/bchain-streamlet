@@ -22,8 +22,8 @@ set(TEST_SOURCES
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)
-target_include_directories(tests PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 target_include_directories(tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(tests PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 
 
 include(FetchContent)
