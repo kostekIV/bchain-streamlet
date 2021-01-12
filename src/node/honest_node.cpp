@@ -1,22 +1,11 @@
 #include "node/honest_node.hpp"
 
-unsigned HonestNode::EPOCH_LENGTH(2);
-
-
-bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks){
-    size_t len = blocks.size();
-    if (len < 3) return false;
-    int a = Block::castFromHashable(blocks[len - 3]).epoch;
-    int b = Block::castFromHashable(blocks[len - 2]).epoch;
-    int c = Block::castFromHashable(blocks[len - 1]).epoch;
-    return a + 1 == b and b + 1 == c;
-}
-
 HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const RoundService& service, const Block& genesisBlock):
     id(id),
     numOfNodes(numOfNodes),
     service(service), 
-    tree(genesisBlock, finalizationPredicate) {}
+    currentEpoch(0),
+    tree(genesisBlock, RoundService::finalizationPredicate) {}
 
 std::vector<Message> HonestNode::onMessageReceive(const Message& message){
     if(message.to() != id)
@@ -39,10 +28,10 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message){
 }
 
 std::vector<Message> HonestNode::atTime(unsigned t){
-    unsigned epoch = t/EPOCH_LENGTH+1;
-    if(!t%EPOCH_LENGTH || service.getLeader(epoch) != id)
+    if(!service.isNewEpoch(t) || service.getLeader(t) != id)
         return {};
-    Block block{Block::castFromHashable(tree.getDeepestNotarized()).hash(), epoch, ""};
+    unsigned epoch = service.getEpoch(t);
+    Block block{Block::castFromHashable(tree.getSomeDeepestNotarized()).hash(), epoch, service.getRandomPayload()};
     return broadcast({MessageType::PROPOSAL, block});
 }
 
