@@ -19,4 +19,6 @@ private:
     mapping_t contentLabeller;
     const Tree& tree;
     std::ostringstream description;
+
+    static std::string PRESENT_NODE_STYLE, NOTARIZED_NODE_STYLE, FINALIZED_NODE_STYLE, ROOT_SYMBOL;
 };

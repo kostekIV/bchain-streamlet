@@ -4,6 +4,11 @@
 #include "state/tree/tree_renderer.hpp"
 #include "state/tree/tree.hpp"
 
+std::string TreeRenderer::PRESENT_NODE_STYLE("style=\"rounded,bold\"");
+std::string TreeRenderer::NOTARIZED_NODE_STYLE("style=\"rounded,bold\", peripheries=2");
+std::string TreeRenderer::FINALIZED_NODE_STYLE("style=\"rounded,bold,filled\", fillcolor=antiquewhite1, peripheries=2");
+
+std::string TreeRenderer::ROOT_SYMBOL("<&perp;>");
 
 TreeRenderer::TreeRenderer(const Tree& tree, mapping_t contentLabeller) :
         tree(tree),
@@ -22,12 +27,10 @@ std::string TreeRenderer::render() {
 void TreeRenderer::renderNodes() {
     for (const auto&[key, val] : tree.hvMapping) {
         auto nodeLabel = contentLabeller(val.getContent());
-        auto style = (val.getStatus() == Status::PRESENT) ? "style=\"rounded,bold\"" :
-                     (val.getStatus() == Status::NOTARIZED) ? "style=\"rounded,bold\", peripheries=2" :
-                     "style=\"rounded,bold,filled\", fillcolor=antiquewhite1, peripheries=2";
+        auto style = (val.getStatus() == Status::PRESENT) ? PRESENT_NODE_STYLE :
+                     (val.getStatus() == Status::NOTARIZED) ? NOTARIZED_NODE_STYLE : FINALIZED_NODE_STYLE;
         description << "\t" << nodeLabel << " [" << style;
-
-        if (Tree::isRoot(val)) description << " , label=<&perp;>";
+        if (Tree::isRoot(val)) description << " , label=" << ROOT_SYMBOL;
         description << "]\n";
     }
 }
