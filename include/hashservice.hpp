@@ -3,7 +3,7 @@
 class HashService{
 public:
     HashService(unsigned n);
-    unsigned getLeader(unsigned epoch);
+    unsigned getLeader(unsigned epoch) const;
 private:
-    unsigned n;
+    const unsigned n;
 };

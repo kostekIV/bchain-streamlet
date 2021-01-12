@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "message/message.hpp"
+#include "state/tree/tree.hpp"
 
 class INode {
 public:

@@ -7,11 +7,12 @@
 #include "hashservice.hpp"
 #include "node/node.hpp"
 
-class HonestNode : public INode{
+class HonestNode: public INode {
 public:
-    HonestNode(unsigned id, unsigned numOfNodes, HashService service, Block genesisBlock);
+    HonestNode(unsigned id, unsigned numOfNodes, const HashService& service, const Block& genesisBlock);
     std::vector<Message> onMessageReceive(const Message& message) override;
     std::vector<Message> atTime(unsigned t) override;
+    const Tree& getTree();
 private:
     static const Block& castFromHashable(const std::reference_wrapper<const Hashable>& ref);
     static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks);
@@ -19,7 +20,7 @@ private:
 
     unsigned id;
     unsigned numOfNodes;
-    HashService service;
+    const HashService& service;
     Tree tree;
     std::unordered_map<hash_t, int> votes;
 
