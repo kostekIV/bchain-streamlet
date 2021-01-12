@@ -1,8 +1,8 @@
 #pragma once
 
-class HashService{
+class RoundService{
 public:
-    HashService(unsigned n);
+    RoundService(unsigned n);
     unsigned getLeader(unsigned epoch) const;
 private:
     const unsigned n;
