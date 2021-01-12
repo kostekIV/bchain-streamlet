@@ -21,8 +21,11 @@ public:
     static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks);
 
     static std::string getRandomPayload();
+
+    const Block& allocateBlock(Block && block);
 private:
     const unsigned n;
+    std::vector<Block> block_pool;    
 
     static std::mt19937 generator;
     static std::string chars;

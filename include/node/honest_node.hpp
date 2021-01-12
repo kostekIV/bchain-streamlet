@@ -8,8 +8,10 @@
 #include "node/node.hpp"
 
 class HonestNode: public INode {
+private:
+    using vote = std::pair<hash_t, std::pair<int, std::vector<bool>>>;
 public:
-    HonestNode(unsigned id, unsigned numOfNodes, const RoundService& service, const Block& genesisBlock);
+    HonestNode(unsigned id, unsigned numOfNodes, RoundService& service, const Block& genesisBlock);
     
     std::vector<Message> onMessageReceive(const Message& message) override;
 
@@ -28,6 +30,6 @@ private:
     unsigned id;
     unsigned numOfNodes;
     unsigned currentEpoch;
-    const RoundService& service;
-    std::unordered_map<hash_t, int> votes;
+    RoundService& service;
+    std::unordered_map<int, vote> votes;
 };

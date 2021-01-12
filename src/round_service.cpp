@@ -35,3 +35,8 @@ std::string RoundService::getRandomPayload() {
         payload[i] = distribution(generator);
     return payload;
 }
+
+const Block& RoundService::allocateBlock(Block && block){
+    block_pool.push_back(std::move(block));
+    return block_pool.back();
+}
