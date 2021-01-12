@@ -57,8 +57,6 @@ Tree::vertices_t Tree::getPathFromRootTo(const Vertex& v) {
     return path;
 }
 
-void Tree::render() const {}
-
 Tree::hashables_t Tree::getFinalizedChain() const {
     auto finalized = getPathFromRootTo(deepestFinalized);
     hashables_t result;

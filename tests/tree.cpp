@@ -1,9 +1,11 @@
 #include "catch2.hpp"
 
 #include <array>
+#include <iostream>
 
 #include "state/hashable.hpp"
 #include "state/tree/tree.hpp"
+#include "state/tree/tree_renderer.hpp"
 
 #define range(V) (V).begin(), (V).end()
 
@@ -138,4 +140,11 @@ TEST_CASE_METHOD(TreeTestFixture, "finalization") {
 
         REQUIRE(tree.getFinalizedChain().size() == 4);
     }
+}
+
+TEST_CASE_METHOD(TreeTestFixture, "rendering generation") {
+    createNotarizedPath(4);
+    createPath(2, 4);
+    TreeRenderer renderer(tree, [](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
+    std::cout << renderer.render() << std::endl;
 }

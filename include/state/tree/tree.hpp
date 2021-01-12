@@ -21,8 +21,6 @@ public:
 
     hashables_t getFinalizedChain() const;
 
-    void render() const;
-
 private:
     void tryFinalizeUntil(const Vertex& v);
 
@@ -34,4 +32,6 @@ private:
     const hash_t rootHash;
     std::unordered_map<hash_t, const Vertex> hvMapping;
     std::reference_wrapper<const Vertex> deepestNotarized, deepestFinalized;
+
+    friend class TreeRenderer;
 };
