@@ -59,38 +59,50 @@ TEST_CASE_METHOD(TreeTestFixture, "instantiation") {
 
 TEST_CASE_METHOD(TreeTestFixture, "creation") {
     SECTION("single node") {
-        REQUIRE(tree.getDeepestNotarized().hash() == "-1");
+        REQUIRE(tree.getSomeDeepestNotarized().hash() == "-1");
+        REQUIRE(tree.isDeepestNotarized("-1"));
+        REQUIRE(tree.isDeepestNotarized(genesisBlock));
     }
 
     SECTION("star") {
         for (int i = 0; i < 5; ++i)
             tree.addBelow(genesisBlock, blocks.back());
-        REQUIRE(tree.getDeepestNotarized().hash() == "-1");
+        REQUIRE(tree.getSomeDeepestNotarized().hash() == "-1");
     }
 
     SECTION("path1") {
         for (int i = 0; i < 5; ++i) {
-            const TestHashable& leaf = (const TestHashable&) tree.getDeepestNotarized();
+            const TestHashable& leaf = (const TestHashable&) tree.getSomeDeepestNotarized();
             REQUIRE(leaf.hash() == std::to_string(i - 1));
             tree.addBelow(leaf, blocks[i]);
             tree.notarize(blocks[i]);
         }
+        REQUIRE(tree.isDeepestNotarized("4"));
+        REQUIRE(tree.isDeepestNotarized(blocks[4]));
     }
 
     SECTION("path2") {
         createPath(6);
-        REQUIRE(tree.getDeepestNotarized().hash() == "-1");
+        REQUIRE(tree.getSomeDeepestNotarized().hash() == "-1");
     }
 
     SECTION("path3") {
         createNotarizedPath(6);
-        REQUIRE(tree.getDeepestNotarized().hash() == "5");
+        REQUIRE(tree.getSomeDeepestNotarized().hash() == "5");
+        REQUIRE(tree.isDeepestNotarized(tree.getSomeDeepestNotarized()));
     }
 
     SECTION("longer chain") {
         createNotarizedPath(3);
         createNotarizedPath(4, 3);
-        REQUIRE(tree.getDeepestNotarized().hash() == "6");
+        REQUIRE(tree.getSomeDeepestNotarized().hash() == "6");
+    }
+
+    SECTION("parallel chains") {
+        createNotarizedPath(3);
+        createNotarizedPath(3, 3);
+        REQUIRE(tree.isDeepestNotarized("2"));
+        REQUIRE(tree.isDeepestNotarized("5"));
     }
 }
 

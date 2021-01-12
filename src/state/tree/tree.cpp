@@ -30,8 +30,8 @@ Tree::Tree(const Hashable& rootContent, pred_t finalizationPredicate) :
 
 bool Tree::isRoot(const Vertex& v) { return v.getDepth() == 0; }
 
-const Hashable& Tree::getDeepestNotarized() const {
-    LOG(DEBUG) << "[TREE]: " << "getDeepestNotarized";
+const Hashable& Tree::getSomeDeepestNotarized() const {
+    LOG(DEBUG) << "[TREE]: " << "getSomeDeepestNotarized";
     return deepestNotarized.get().getContent();
 }
 
@@ -82,4 +82,12 @@ Tree::hashables_t Tree::getFinalizedChain() const {
     hashables_t result;
     std::for_each(range(finalized), [&result](auto v) { result.push_back(v.get().getContent()); });
     return result;
+}
+
+bool Tree::isDeepestNotarized(const Hashable& hashable) const { return isDeepestNotarized(hashable.hash()); }
+
+bool Tree::isDeepestNotarized(const hash_t& hash) const {
+    LOG(DEBUG) << "[TREE]: " << "check whether " << hash << " is one of the deepest notarized";
+    const auto& v = hvMapping.at(hash);
+    return v.getStatus() != Status::PRESENT and v.getDepth() == deepestNotarized.get().getDepth();
 }
