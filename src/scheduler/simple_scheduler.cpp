@@ -1,5 +1,7 @@
 #include "scheduler/simple_scheduler.hpp"
 
+#include "logging/easylogging++.h"
+
 
 namespace {
     template <typename T>
@@ -35,8 +37,11 @@ std::vector<std::unique_ptr<INode>> SimpleScheduler::takeOverNodes() {
 }
 
 void SimpleScheduler::clockTick() {
+
+    LOG(INFO) << "[SimpleScheduler]: " << "Broadcast time " << timeSinceStart;
     broadcastTime();
 
+    LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
     while (!messages.empty()) {
         auto m = messages.front();
         messages.pop();
@@ -57,6 +62,7 @@ std::vector<Message> SimpleScheduler::sendRec(const Message& message) {
     unsigned n = nodes.size();
     if (not check_range(0u, n - 1, message.from()) or not check_range(0u, n - 1, message.to())) {
         // ToDo add logging
+        LOG(ERROR) << "Message receiver or sender not it range\n" << "Receiver: " << message.to() << ", Sender: " << message.from() << ", Node count: " << n;
         return std::vector<Message>{};
     }
 

@@ -6,6 +6,7 @@ set(SOURCES hashservice.cpp)
 target_sources(streamlet PRIVATE ${SOURCES})
 target_sources(tests PRIVATE ${SOURCES})
 
+add_subdirectory(logging)
 add_subdirectory(message)
 add_subdirectory(node)
 add_subdirectory(scenarios)

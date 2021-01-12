@@ -1,4 +1,6 @@
 #include <cassert>
+#include "logging/easylogging++.h"
+
 #include "state/tree/vertex.hpp"
 
 Vertex::Vertex(const Hashable& content) :
@@ -20,11 +22,13 @@ unsigned Vertex::getDepth() const { return depth; }
 Status Vertex::getStatus() const { return status; }
 
 void Vertex::notarize() const {
+    LOG(DEBUG) << "[Vertex]: notarizing vertex with status " << statusToString(status);
     assert(status == Status::PRESENT);
     status = Status::NOTARIZED;
 }
 
 void Vertex::finalize() const {
+    LOG(DEBUG) << "[Vertex]: finalizing vertex with status " << statusToString(status);
     assert(status == Status::NOTARIZED or status == Status::FINALIZED);
     status = Status::FINALIZED;
 }

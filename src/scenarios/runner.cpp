@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include "logging/easylogging++.h"
+
 #include "scenarios/runner.hpp"
 
 #include "node/node.hpp"
@@ -56,7 +58,10 @@ std::vector<std::unique_ptr<INode>> Runner::play() {
     std::unique_ptr<IScheduler> scheduler = get_scheduler(schedulerType, allNodes);
 
     // End of scenario initialization
+
+    LOG(INFO) << "Runner started the scenario: " << scenarioName;
     scheduler->start(nrOfRounds);
+    LOG(INFO) << "Scenario: " << scenarioName << " finished";
 
     return scheduler->takeOverNodes();
 }
