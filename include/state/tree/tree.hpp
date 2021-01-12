@@ -13,9 +13,15 @@ private:
 public:
     Tree(const Hashable& rootContent, pred_t finalizePredicate);
 
-    const Hashable& getDeepestNotarized() const;
+    const Hashable& getSomeDeepestNotarized() const;
+
+    bool isDeepestNotarized(const Hashable& hashable) const;
+
+    bool isDeepestNotarized(const hash_t& hash) const;
 
     void addBelow(const Hashable& parent, const Hashable& child);
+
+    void addBelow(const hash_t& parentHash, const Hashable& parent);
 
     void notarize(const Hashable& hashable);
 
