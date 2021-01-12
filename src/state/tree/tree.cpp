@@ -8,7 +8,7 @@
 #define range(V) (V).begin(), (V).end()
 
 namespace {
-    void checkAndLogError(std::unordered_map<hash_t, const Vertex> &hvMapping, hash_t key) {
+    void checkAndLogError(std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
         if (hvMapping.find(key) == hvMapping.end()) {
             LOG(ERROR) << "No key " << key << "in tree map";
         }
@@ -31,13 +31,15 @@ Tree::Tree(const Hashable& rootContent, pred_t finalizationPredicate) :
 bool Tree::isRoot(const Vertex& v) { return v.getDepth() == 0; }
 
 const Hashable& Tree::getDeepestNotarized() const {
-    LOG(DEBUG) << "[TREE]: " << "getDeepestNotirized";
+    LOG(DEBUG) << "[TREE]: " << "getDeepestNotarized";
     return deepestNotarized.get().getContent();
 }
 
-void Tree::addBelow(const Hashable& parent, const Hashable& child) {
-    LOG(DEBUG) << "[TREE]: " << "addBelow parent with hash " << parent.hash() << " child with hash " << child.hash();
-    const Vertex& parentVertex = hvMapping.at(parent.hash());
+void Tree::addBelow(const Hashable& parent, const Hashable& child) { addBelow(parent.hash(), child); }
+
+void Tree::addBelow(const hash_t& parentHash, const Hashable& child) {
+    LOG(DEBUG) << "[TREE]: " << "addBelow parent with hash " << parentHash << " child with hash " << child.hash();
+    const Vertex& parentVertex = hvMapping.at(parentHash);
     hash_t childHash = child.hash();
     hvMapping.try_emplace(childHash, child, parentVertex);
 }

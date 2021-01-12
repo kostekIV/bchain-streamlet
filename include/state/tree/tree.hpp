@@ -17,6 +17,8 @@ public:
 
     void addBelow(const Hashable& parent, const Hashable& child);
 
+    void addBelow(const hash_t& parentHash, const Hashable& parent);
+
     void notarize(const Hashable& hashable);
 
     hashables_t getFinalizedChain() const;
