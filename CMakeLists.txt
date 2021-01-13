@@ -19,7 +19,8 @@ set(TEST_SOURCES
         tests/tree.cpp
         tests/config-test.cpp
         tests/runner-test.cpp
-        tests/service-test.cpp)
+        tests/service-test.cpp
+        tests/tree_union-test.cpp)
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)

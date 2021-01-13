@@ -40,4 +40,5 @@ private:
     std::reference_wrapper<const Vertex> deepestNotarized, deepestFinalized;
 
     friend class TreeRenderer;
+    friend class TreeUnion;
 };

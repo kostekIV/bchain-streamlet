@@ -10,7 +10,7 @@
 namespace {
     void checkAndLogError(const std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
         if (hvMapping.find(key) == hvMapping.end()) {
-            LOG(ERROR) << "No key " << key << "in tree map";
+            LOG(ERROR) << "No key " << key << " in tree map";
         }
     }
 }
