@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "state/hashable.hpp"
 
 
@@ -11,4 +12,6 @@ struct Block : Hashable {
     const std::string payload;
 
     hash_t hash() const override;
+
+    static const Block& castFromHashable(const std::reference_wrapper<const Hashable>& ref);
 };

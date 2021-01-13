@@ -23,7 +23,7 @@ public:
     ~TestNode() {}
 };
 
-TEST_CASE("Scheduler does not hangs") {
+TEST_CASE("Scheduler does not hang") {
     std::vector<std::unique_ptr<INode>> nodes;
     for (unsigned i = 0; i < 10; i++) {
       nodes.emplace_back(std::make_unique<TestNode>());
