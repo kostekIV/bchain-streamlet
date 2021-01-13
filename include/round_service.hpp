@@ -10,25 +10,22 @@
 
 class RoundService {
 public:
-    RoundService(unsigned n);
+    RoundService(unsigned n, 
+                unsigned epochLength = 2, 
+                std::random_device::result_type r = std::random_device{}());
 
     unsigned getLeader(unsigned epoch) const;
 
     unsigned getEpoch(unsigned round) const;
 
-    bool isNewEpoch(unsigned round) const;
+    bool isEpochStart(unsigned round) const;
 
-    static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks);
+    std::string getRandomPayload();
 
-    static std::string getRandomPayload();
-
-    const Block& allocateBlock(Block && block);
 private:
     const unsigned n;
-    std::vector<Block> block_pool;    
-
-    static std::mt19937 generator;
-    static std::string chars;
-    static unsigned EPOCH_LENGTH;
-    static unsigned PAYLOAD_LENGTH;
+    unsigned epochLength;
+    std::default_random_engine generator;
+    
+    static const std::string CHARS;
 };
