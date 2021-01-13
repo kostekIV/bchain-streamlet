@@ -9,10 +9,9 @@
 
 class TreeUnion {
 public:
-    explicit TreeUnion() = default;
-    explicit TreeUnion(const Tree &tree);
+    TreeUnion();
 
-    TreeUnion& add(const Tree &tree);
+    TreeUnion& add(const Tree& tree);
 
     bool isValidTree() const;
 
@@ -28,14 +27,10 @@ public:
      */
     std::unordered_map<hash_t, const Vertex> asHashVertexMapping() const;
 
-    void print() const;
-
 private:
     void insertTree(const Tree &tree);
     void safeInsertEdge(const hash_t& v, const hash_t& u);
     void safeInitialiseEdges(const hash_t& v);
-
-    unsigned countFinalisedBlocksAtEnd() const;
 
     unsigned rootEpoch;
     hash_t root;

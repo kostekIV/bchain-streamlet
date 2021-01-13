@@ -39,7 +39,7 @@ namespace {
             }
         }
 
-        void notirizeAll() {
+        void notarizeAlmostAll() {
             for (auto& b: blocks1) {
                 tree1.notarize(b);
             }
@@ -76,29 +76,12 @@ namespace {
     };
 }
 
-TEST_CASE_METHOD(TreeTestFixture, "Constructor from tree") {
-    initialiseTree1();
-
-    TreeUnion trees(tree1);
-
-    REQUIRE(true);
-}
-
-
-TEST_CASE_METHOD(TreeTestFixture, "Constructor from tree same as insert tree") {
-    initialiseTree1();
-
-    TreeUnion trees1(tree1);
-    TreeUnion trees2;
-    trees2.add(tree1);
-
-    REQUIRE(trees1 == trees2);
-}
-
 TEST_CASE_METHOD(TreeTestFixture, "Adding multiple times same tree") {
     initialiseTree1();
 
-    TreeUnion trees1(tree1);
+    TreeUnion trees1;
+    trees1.add(tree1);
+
     TreeUnion trees2;
 
     trees2.add(tree1)
@@ -114,12 +97,10 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding tree1 then tree2 same as adding tree2 
     initialiseTree2();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
     TreeUnion trees2;
-    trees2
-        .add(tree2)
+    trees2.add(tree2)
         .add(tree1);
 
     REQUIRE(trees1 == trees2);
@@ -130,8 +111,7 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding 2 disjoint trees result in invalidTree
     initialiseTree3();
 
     TreeUnion trees1;
-    trees1
-        .add(tree2)
+    trees1.add(tree2)
         .add(tree3);
 
     REQUIRE(trees1.isValidTree() == false);
@@ -142,8 +122,7 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding 2 trees with the same root result in v
     initialiseTree2();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
 
     REQUIRE(trees1.isValidTree());
@@ -154,8 +133,7 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding 2 disjoint trees result in not connect
     initialiseTree3();
 
     TreeUnion trees1;
-    trees1
-        .add(tree2)
+    trees1.add(tree2)
         .add(tree3);
 
     REQUIRE(trees1.isConnected() == false);
@@ -166,8 +144,7 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding 2 trees with the same root result in c
     initialiseTree2();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
 
     REQUIRE(trees1.isConnected());
@@ -178,13 +155,10 @@ TEST_CASE_METHOD(TreeTestFixture, "Finalised chain is proper") {
     initialiseTree1();
     initialiseTree2();
     initialiseTree3();
-    notirizeAll();
+    notarizeAlmostAll();
 
     TreeUnion trees1;
-    trees1
-        .add(tree2);
-
-    trees1.print();
+    trees1.add(tree2);
 
     REQUIRE(trees1.isFinalizedCorrectly());
 }
@@ -193,11 +167,10 @@ TEST_CASE_METHOD(TreeTestFixture, "Adding 2 trees with same root results in bad 
     initialiseTree1();
     initialiseTree2();
     initialiseTree3();
-    notirizeAll();
+    notarizeAlmostAll();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
 
     REQUIRE(trees1.isFinalizedCorrectly() == false);
@@ -208,8 +181,7 @@ TEST_CASE_METHOD(TreeTestFixture, "After adding 2 trees returned mapping contain
     initialiseTree2();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
 
     auto ret = trees1.asHashVertexMapping();
@@ -223,11 +195,10 @@ TEST_CASE_METHOD(TreeTestFixture, "After adding 2 trees returned mapping have co
     initialiseTree1();
     initialiseTree2();
     initialiseTree3();
-    notirizeAll();
+    notarizeAlmostAll();
 
     TreeUnion trees1;
-    trees1
-        .add(tree1)
+    trees1.add(tree1)
         .add(tree2);
 
     auto ret = trees1.asHashVertexMapping();

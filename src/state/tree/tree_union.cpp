@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <iostream>
 
 #include "logging/easylogging++.h"
 
@@ -16,23 +15,16 @@ namespace {
     bool dfs(const hash_t& node, std::unordered_set<hash_t>& visited,
              const std::unordered_map<hash_t, std::unordered_set<hash_t>>& edges) {
         visited.emplace(node);
-        for (const hash_t& h: edges.at(node)) {
-            if (visited.find(h) != visited.end() or not dfs(h, visited, edges)) {
-                return false;
-            }
-        }
-        return true;
+        return std::all_of(edges.at(node).begin(), edges.at(node).end(), [&](const hash_t& h) {
+            return visited.find(h) == visited.end() and dfs(h, visited, edges);
+        });
     }
 }
 
-TreeUnion::TreeUnion(const Tree &tree):
-    rootEpoch(-1) {
-    insertTree(tree);
-    LOG(DEBUG) << "TreeUnion initialised";
-}
+TreeUnion::TreeUnion():
+    rootEpoch(-1) {}
 
 void TreeUnion::insertTree(const Tree& tree) {
-
     try {
         LOG(DEBUG) << "Populating union with new tree";
         for (const auto&[key, val] : tree.hvMapping) {
@@ -57,8 +49,8 @@ void TreeUnion::insertTree(const Tree& tree) {
             }
         }
     } catch (const std::bad_cast& e) {
-            LOG(ERROR) << "Bad cast - Tree with unsuported type of hashable inside Vertex";
-            throw e;
+        LOG(ERROR) << "Bad cast - Tree with unsuported type of hashable inside Vertex";
+        throw e;
     }
 }
 
@@ -81,31 +73,28 @@ bool TreeUnion::isConnected() const {
 }
 
 bool TreeUnion::isFinalizedCorrectly() const {
-    // finalised nodes can have only one outgoing edge with finalised block
-    // plus only one of them must have none such edges.
-    return std::all_of(nodes.begin(), nodes.end(), [this](hash_t t) {
-        return nodesStatus.at(t) != Status::FINALIZED
-            or std::count_if(edges.at(t).begin(), edges.at(t).end(), [this](hash_t outgoing) {
-                return nodesStatus.at(outgoing) == Status::FINALIZED;
-            }) <= 1;
-    }) and countFinalisedBlocksAtEnd() == 1;
-}
+    long finalized = std::count_if(nodes.begin(), nodes.end(), [this](const hash_t& node) {
+        return nodesStatus.at(node) == Status::FINALIZED;
+    });
 
-unsigned TreeUnion::countFinalisedBlocksAtEnd() const {
-    int counter = 0;
+    hash_t current = root;
+    hash_t next = root;
 
-    auto countUnfinalised = [this] (hash_t node) {
-        return std::count_if(edges.at(node).begin(), edges.at(node).end(), [this](hash_t child) {
-            return nodesStatus.at(child) != Status::FINALIZED;
-        });
-    };
-
-    for (auto& node: nodes) {
-        if (nodesStatus.at(node) == Status::FINALIZED and countUnfinalised(node) == edges.at(node).size()) {
-            counter += 1;
+    while (true) {
+        finalized -= 1;
+        for (hash_t child: edges.at(current)) {
+            if (nodesStatus.at(child) == Status::FINALIZED) {
+                next = child;
+                break;
+            }
         }
+        if (next == current) {
+            break;
+        }
+        current = next;
     }
-    return counter;
+
+    return finalized == 0;
 }
 
 void TreeUnion::safeInsertEdge(const hash_t& v, const hash_t& u) {
@@ -114,9 +103,7 @@ void TreeUnion::safeInsertEdge(const hash_t& v, const hash_t& u) {
 }
 
 void TreeUnion::safeInitialiseEdges(const hash_t& v) {
-    if (edges.find(v) == edges.end()) {
-        edges.emplace(v, std::unordered_set<hash_t>());
-    }
+    edges.try_emplace(v, std::unordered_set<hash_t>());
 }
 
 bool TreeUnion::operator==(TreeUnion const& rhs) const {
@@ -129,23 +116,6 @@ bool TreeUnion::operator==(TreeUnion const& rhs) const {
 
 bool TreeUnion::operator!=(TreeUnion const& rhs) const {
     return not (*this == rhs);
-}
-
-void TreeUnion::print() const {
-    std::cout << "nodes:" << std::endl;
-    for (auto x: nodes) {
-        std::cout << "* " << x << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << "edges:" << std::endl;
-
-    for (auto x: edges) {
-        std::cout << "* " << x.first << " - [ ";
-        for (auto z: x.second) {
-            std::cout << z << " ";
-        }
-        std::cout << "]" << std::endl;
-    }
 }
 
 std::unordered_map<hash_t, const Vertex> TreeUnion::asHashVertexMapping() const {
