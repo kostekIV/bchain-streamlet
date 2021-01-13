@@ -1,12 +1,7 @@
 #pragma once
 
-#include <functional>
-#include <vector>
 #include <string>
 #include <random>
-
-#include "state/hashable.hpp"
-#include "state/block.hpp"
 
 class RoundService {
 public:
