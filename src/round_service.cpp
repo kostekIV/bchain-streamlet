@@ -8,6 +8,8 @@ RoundService::RoundService(unsigned n, unsigned epochLenght, std::random_device:
     generator(r){}
 
 unsigned RoundService::getLeader(unsigned epoch) const {
+    if(epoch == 0)
+        throw "Genesis epoch does not have a leader";
     return (epoch - 1) % n;
 }
 
