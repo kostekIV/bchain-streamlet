@@ -10,7 +10,7 @@
 
 class RoundService {
 public:
-    RoundService(unsigned n, 
+    explicit RoundService(unsigned n, 
                 unsigned epochLength = 2, 
                 std::random_device::result_type r = std::random_device{}());
 
