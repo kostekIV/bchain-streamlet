@@ -4,7 +4,9 @@
 
 TEST_CASE("HonestNode sends PROPOSE and VOTE") {
     Block genesis{"", 0, "GeNeZis"};
+
     RoundService service{3};
+
     HonestNode node1{0, 3, service, genesis};
     HonestNode node2{1, 3, service, genesis};
 
@@ -33,4 +35,53 @@ TEST_CASE("HonestNode sends PROPOSE and VOTE") {
         REQUIRE(votes[i].to() == i);
         REQUIRE(votes[i].content().messageType == MessageType::VOTE);
     }
+}
+
+TEST_CASE("HonestNode notarizes blocks") {
+    Block genesis{"", 0, "GeNeZis"};
+    Block newBlock{genesis.hash(), 1, "nasfdfa"};
+
+    RoundService service{10};
+    HonestNode node{5, 10, service, genesis};
+
+    Message proposal{0, 5, {MessageType::PROPOSAL, newBlock}};
+
+    node.onMessageReceive(proposal);
+
+    for (unsigned i = 0; i < 7; i++)
+        node.onMessageReceive({i, 5, {MessageType::VOTE, newBlock}});
+    
+    REQUIRE(node.getTree().isDeepestNotarized(newBlock));
+}
+
+TEST_CASE("HonestNode differentiates votes") {
+    Block genesis{"", 0, "GeNeZis"};
+    Block newBlock{genesis.hash(), 1, "nasfdfa"};
+
+    RoundService service{10};
+    HonestNode node{5, 10, service, genesis};
+
+    Message proposal{0, 5, {MessageType::PROPOSAL, newBlock}};
+    Message vote{2, 5, {MessageType::VOTE, newBlock}};
+
+    node.onMessageReceive(proposal);
+
+    for (int i = 0; i < 7; i++)
+        node.onMessageReceive(vote);
+    
+    REQUIRE_FALSE(node.getTree().isDeepestNotarized(newBlock));
+}
+
+TEST_CASE("HonestNode ignores proposals not from leaders") {
+    Block genesis{"", 0, "GeNeZis"};
+    Block newBlock{genesis.hash(), 1, "nasfdfa"};
+
+    RoundService service{10};
+    HonestNode node{5, 10, service, genesis};
+
+    Message proposal{2, 5, {MessageType::PROPOSAL, newBlock}};
+
+    auto messages = node.onMessageReceive(proposal);
+    
+    REQUIRE(messages.size() == 0);
 }

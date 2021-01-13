@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <unordered_map>
+#include <unordered_set>
 
 #include "state/tree/tree.hpp"
 #include "round_service.hpp"
@@ -9,8 +9,6 @@
 #include "node/node.hpp"
 
 class HonestNode: public INode {
-private:
-    using vote = std::pair<hash_t, std::pair<int, std::vector<bool>>>;
 public:
     HonestNode(unsigned id, unsigned numOfNodes, RoundService& service, const Block& genesisBlock);
     
@@ -33,6 +31,7 @@ private:
     unsigned id;
     unsigned numOfNodes;
     RoundService& service;
-    std::unordered_map<int, vote> votes;
+    std::vector<hash_t> proposedBlocks;
+    std::vector<std::unordered_set<int>> votes;
     std::vector<Block> blocks;
 };

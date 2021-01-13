@@ -6,8 +6,8 @@ enum class MessageType{
     VOTE
 };
 
-inline std::string typeToString(const MessageType& status) {
-    switch (status) {
+inline std::string typeToString(const MessageType& type) {
+    switch (type) {
         case MessageType::PROPOSAL:
             return "PROPOSAL";
             break;
