@@ -23,4 +23,5 @@ private:
     std::default_random_engine generator;
     
     static const std::string CHARS;
+    static const unsigned MAX_PAYLOAD_LENGTH;
 };
