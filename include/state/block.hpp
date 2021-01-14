@@ -14,4 +14,6 @@ struct Block : Hashable {
     hash_t hash() const override;
 
     static const Block& castFromHashable(const std::reference_wrapper<const Hashable>& ref);
+
+    static Block createGenesisBlock();
 };

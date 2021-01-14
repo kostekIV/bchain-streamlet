@@ -8,10 +8,13 @@
 
 #include "scenarios/runner.hpp"
 
+#include "round_service.hpp"
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
+#include "node/honest_node.hpp"
 #include "scheduler/scheduler.hpp"
 #include "scheduler/simple_scheduler.hpp"
+#include "state/block.hpp"
 
 namespace {
     std::unique_ptr<IScheduler> get_scheduler(SchedulerType type, std::vector<std::unique_ptr<INode>>& nodes) {
@@ -46,8 +49,12 @@ void Runner::summary() {
 std::vector<std::unique_ptr<INode>> Runner::play() {
     std::vector<std::unique_ptr<INode>> allNodes;
 
+    unsigned n = honestNodesCount + dummyNodesCount + dishonestNodesCount;
+    RoundService service(n, 2, std::random_device{}());
+    Block genesisBlock = Block::createGenesisBlock();
+
     for (unsigned i = 0; i < honestNodesCount; i++) {
-        // ToDo initialize
+        allNodes.emplace_back(std::make_unique<HonestNode>(i, n, service, genesisBlock));
     }
     for (unsigned i = 0; i < dummyNodesCount; i++) {
         allNodes.emplace_back(std::make_unique<DummyNode>());

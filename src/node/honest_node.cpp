@@ -19,7 +19,7 @@ HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const RoundService& ser
         proposedBlocks.try_emplace(0, genesisBlock.hash());
     }
 
-const Block& HonestNode::storeBlock(const Block& block) {
+const Block& HonestNode::storeBlock(const Block block) {
     blocks.push_back(block);
     return blocks.back();
 }
@@ -46,7 +46,8 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
                 return broadcast({MessageType::VOTE, block});
             break;
         case MessageType::VOTE:
-            if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash())
+            if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() ||
+                not tree.isDeepestNotarized(block.parentHash))
                 return {};
             votes[epoch].insert(message.from());
             if (3 * votes[epoch].size() >= 2 * numOfNodes) {

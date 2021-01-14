@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -26,7 +27,7 @@ private:
 
     std::vector<Message> broadcast(Content content);
 
-    const Block& storeBlock(const Block& block);
+    const Block& storeBlock(const Block block);
 
     Tree tree;
     const unsigned id;
@@ -34,5 +35,5 @@ private:
     const RoundService& service;
     std::unordered_map<int, hash_t> proposedBlocks;
     std::unordered_map<int, std::unordered_set<int>> votes;
-    std::vector<Block> blocks;
+    std::list<Block> blocks;
 };

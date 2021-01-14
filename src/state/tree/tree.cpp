@@ -63,8 +63,12 @@ void Tree::tryFinalizeUntil(const Vertex& v) {
     hashables_t hashables;
     std::for_each(range(path), [&hashables](auto v) { hashables.push_back(std::cref(v.get().getContent())); });
     if (finalizationPredicate(hashables)) {
-        for (int i = 0; i < path.size() - 1; ++i)
+        for (int i = 0; i < path.size() - 1; ++i) {
+            if (path[i].get().getStatus() == Status::FINALIZED) {
+                break;
+            }
             path[i].get().finalize();
+        }
         deepestFinalized = *(path.end() - 2);
     }
 }
