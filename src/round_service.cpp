@@ -22,7 +22,7 @@ bool RoundService::isEpochStart(unsigned round) const {
     return round % epochLength == 0;
 }
 
-std::string RoundService::getRandomPayload() {
+std::string RoundService::getRandomPayload() const {
     std::uniform_int_distribution<int> distribution(0, MAX_PAYLOAD_LENGTH - 1);
     unsigned length = distribution(generator) + 1;
     std::string payload(length, '0');
