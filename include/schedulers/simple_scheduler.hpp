@@ -6,7 +6,7 @@
 
 #include "node/node.hpp"
 #include "message/message.hpp"
-#include "scheduler/scheduler.hpp"
+#include "scheduler.hpp"
 
 
 class SimpleScheduler: public IScheduler {

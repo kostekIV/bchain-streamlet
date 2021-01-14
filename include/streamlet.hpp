@@ -6,9 +6,8 @@
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
 #include "node/honest_node.hpp"
-
-#include "scheduler/scheduler.hpp"
-#include "scheduler/simple_scheduler.hpp"
+#include "schedulers/scheduler.hpp"
+#include "schedulers/simple_scheduler.hpp"
 
 #include "scenarios/config.hpp"
 #include "scenarios/runner.hpp"

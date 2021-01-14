@@ -1,4 +1,4 @@
-#include "scheduler/simple_scheduler.hpp"
+#include "schedulers/simple_scheduler.hpp"
 
 #include "logging/easylogging++.h"
 
