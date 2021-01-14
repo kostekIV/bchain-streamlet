@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "state/hashable.hpp"
-#include "state/tree/tree.hpp"
-#include "state/tree/tree_renderer.hpp"
+#include "state/tree/tree-test.hpp"
+#include "state/tree/state_renderer.hpp"
 
 #define range(V) (V).begin(), (V).end()
 
@@ -158,8 +158,8 @@ TEST_CASE_METHOD(TreeTestFixture, "rendering generation") {
     SECTION("rendering single tree") {
         createNotarizedPath(4);
         createPath(2, 4);
-        TreeRenderer renderer(tree, [](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
-        std::cout << renderer.render() << std::endl;
+        StateRenderer renderer([](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
+        std::cout << renderer.renderTree({tree, ""}) << std::endl;
     }
 
     SECTION("rendering forest") {
@@ -169,12 +169,11 @@ TEST_CASE_METHOD(TreeTestFixture, "rendering generation") {
         TreeTestFixture sibling;
         sibling.createPath(2);
         sibling.createNotarizedPath(3, 2);
-
-        auto description = TreeRenderer::renderForest({{tree,         "Node1"},
-                                                       {sibling.tree, "Node2"}},
-                                                      [](const Hashable& h) {
-                                                          return std::to_string(castFromHashable(h).id);
-                                                      });
+        StateRenderer stateRenderer([](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
+        auto description = stateRenderer.renderForest(
+                {{tree,         "Node1"},
+                 {sibling.tree, "Node2"}}
+        );
         std::cout << description << std::endl;
     }
 }

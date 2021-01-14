@@ -2,21 +2,20 @@
 
 #include <sstream>
 
-#include "tree.hpp"
+#include "tree-test.hpp"
 
-class TreeRenderer {
+class StateRenderer {
     using mapping_t = std::function<std::string(const Hashable&)>;
     using named_tree_t = std::pair<const Tree&, std::string>;
+
 public:
-    static std::string renderForest(const std::vector<named_tree_t>& trees, const mapping_t& contentLabeller);
+    explicit StateRenderer(mapping_t contentLabeller);
 
-    TreeRenderer(const Tree& tree, mapping_t contentLabeller, std::string treeId = "");
+    std::string renderTree(const named_tree_t& namedTree) const;
 
-    std::string render() const;
+    std::string renderForest(const std::vector<named_tree_t>& namedTrees) const;
 
 private:
-    std::string renderWithinForest() const;
-
     std::string renderWithTitle(const std::string& title) const;
 
     void renderNodes() const;
@@ -25,10 +24,13 @@ private:
 
     std::string nodeId(const Vertex& v) const;
 
+    void setCurrentTreeProperties(const named_tree_t& namedTree) const;
+
     const mapping_t contentLabeller;
-    const Tree& tree;
-    const std::string treeId;
+
     mutable std::ostringstream description;
+    mutable std::unordered_map<hash_t, const Vertex> currentHVMapping;
+    mutable std::string currentTreeId;
 
     const static std::string PRESENT_NODE_STYLE, NOTARIZED_NODE_STYLE, FINALIZED_NODE_STYLE, ROOT_SYMBOL;
 };
