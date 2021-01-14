@@ -16,7 +16,7 @@ target_include_directories(Catch INTERFACE tests)
 set(TEST_SOURCES
         tests/main.cpp
         tests/scheduler-test.cpp
-        tests/tree.cpp
+        tests/tree-test.cpp
         tests/config-test.cpp
         tests/runner-test.cpp
         tests/service-test.cpp)

@@ -39,5 +39,5 @@ private:
     std::unordered_map<hash_t, const Vertex> hvMapping;
     std::reference_wrapper<const Vertex> deepestNotarized, deepestFinalized;
 
-    friend class TreeRenderer;
+    friend class StateRenderer;
 };
