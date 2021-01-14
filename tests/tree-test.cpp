@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "state/hashable.hpp"
-#include "state/tree/tree-test.hpp"
+#include "state/tree/tree.hpp"
 #include "state/tree/state_renderer.hpp"
 
 #define range(V) (V).begin(), (V).end()
