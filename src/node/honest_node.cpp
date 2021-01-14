@@ -47,11 +47,12 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
             break;
         case MessageType::VOTE:
             if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() ||
-                not tree.isDeepestNotarized(block.parentHash))
+                notarizedBlocks.find(block.hash()) != notarizedBlocks.end())
                 return {};
             votes[epoch].insert(message.from());
             if (3 * votes[epoch].size() >= 2 * numOfNodes) {
                 LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Notarizing block with hash " << block.hash();
+                notarizedBlocks.emplace(block.hash());
                 tree.notarize(block);
             }
             break;

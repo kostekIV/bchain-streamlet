@@ -34,6 +34,7 @@ private:
     const unsigned numOfNodes;
     const RoundService& service;
     std::unordered_map<int, hash_t> proposedBlocks;
+    std::unordered_set<hash_t> notarizedBlocks;
     std::unordered_map<int, std::unordered_set<int>> votes;
     std::list<Block> blocks;
 };
