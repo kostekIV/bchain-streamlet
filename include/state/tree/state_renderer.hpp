@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "tree-test.hpp"
+#include "tree.hpp"
 
 class StateRenderer {
     using mapping_t = std::function<std::string(const Hashable&)>;
