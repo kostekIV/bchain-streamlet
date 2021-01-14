@@ -29,7 +29,7 @@ const Tree& HonestNode::getTree() {
 }
 
 std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
-    LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Received message from node " << message.from() 
+    LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Received message from node " << message.from()
         << " with type " << typeToString(message.content().messageType) << " and hash " << message.content().block.hash();
     if (message.to() != id)
         return {};
@@ -37,7 +37,7 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
     unsigned epoch = message.content().block.epoch;
     switch (message.content().messageType) {
         case MessageType::PROPOSAL:
-            if (message.from() != service.getLeader(epoch) || 
+            if (message.from() != service.getLeader(epoch) ||
                 proposedBlocks.find(epoch) != proposedBlocks.end())
                 return {};
             proposedBlocks.try_emplace(epoch, block.hash());
@@ -46,8 +46,7 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
                 return broadcast({MessageType::VOTE, block});
             break;
         case MessageType::VOTE:
-            if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() || 
-                votes[epoch].find(message.from()) != votes[epoch].end())
+            if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash())
                 return {};
             votes[epoch].insert(message.from());
             if (3 * votes[epoch].size() >= 2 * numOfNodes) {
