@@ -35,7 +35,7 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
         return {};
     Block block = message.content().block;
     unsigned epoch = message.content().block.epoch;
-    switch (message.content().messageType){
+    switch (message.content().messageType) {
         case MessageType::PROPOSAL:
             if (message.from() != service.getLeader(epoch) || 
                 proposedBlocks.find(epoch) != proposedBlocks.end())
