@@ -8,6 +8,8 @@
 #include "node/honest_node.hpp"
 #include "schedulers/scheduler.hpp"
 #include "schedulers/simple_scheduler.hpp"
+#include "schedulers/partitioning_scheduler.hpp"
+#include "schedulers/queue.tpp"
 
 #include "scenarios/config.hpp"
 #include "scenarios/runner.hpp"

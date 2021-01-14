@@ -9,22 +9,22 @@
 #include "scheduler.hpp"
 
 
-class SimpleScheduler : public IScheduler {
+class PartitioningScheduler : public IScheduler {
 public:
-    explicit SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes);
+    explicit PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes);
 
     void start(unsigned nrRounds) override;
 
     std::vector<std::unique_ptr<INode>> takeOverNodes() override;
 
-    const std::vector<std::unique_ptr<INode>>& getNodes() const;
-
-    ~SimpleScheduler() = default;
+    ~PartitioningScheduler() = default;
 
 private:
     unsigned timeSinceStart;
     std::vector<std::unique_ptr<INode>> nodes;
-    std::queue<Message> messages;
+    std::queue<Message> messagesCommon, messagesMaj2Maj, messagesMaj2Min, messagesMin2Maj, messagesMin2Min;
+
+    void commonClockTick();
 
     void clockTick();
 
