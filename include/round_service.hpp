@@ -15,12 +15,12 @@ public:
 
     bool isEpochStart(unsigned round) const;
 
-    std::string getRandomPayload();
+    std::string getRandomPayload() const;
 
 private:
     const unsigned n;
-    unsigned epochLength;
-    std::default_random_engine generator;
+    const unsigned epochLength;
+    mutable std::default_random_engine generator;
     
     static const std::string CHARS;
     static const unsigned MAX_PAYLOAD_LENGTH;

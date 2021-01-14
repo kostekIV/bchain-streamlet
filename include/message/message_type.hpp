@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
 
-enum class MessageType{
+enum class MessageType {
     PROPOSAL,
     VOTE
 };
 
-inline std::string typeToString(const MessageType& type) {
+inline std::string typeToString(MessageType type) {
     switch (type) {
         case MessageType::PROPOSAL:
             return "PROPOSAL";
@@ -15,7 +15,7 @@ inline std::string typeToString(const MessageType& type) {
             return "VOTE";
             break;
         default:
-            return "UNKNOWN MESSAGE TYPE";
+            throw "Unknown message type";
             break;
     }
 }

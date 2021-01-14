@@ -11,13 +11,13 @@ bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<
     return a + 1 == b and b + 1 == c;
 }
 
-HonestNode::HonestNode(unsigned id, unsigned numOfNodes, RoundService& service, const Block& genesisBlock):
+HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const RoundService& service, const Block& genesisBlock):
     id(id),
     numOfNodes(numOfNodes),
     service(service),
-    proposedBlocks(1, genesisBlock.hash()),
-    votes(1),
-    tree(genesisBlock, HonestNode::finalizationPredicate) {}
+    tree(genesisBlock, HonestNode::finalizationPredicate) {
+        proposedBlocks.try_emplace(0, genesisBlock.hash());
+    }
 
 const Block& HonestNode::storeBlock(const Block& block) {
     blocks.push_back(block);
@@ -38,20 +38,15 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
     switch (message.content().messageType){
         case MessageType::PROPOSAL:
             if (message.from() != service.getLeader(epoch) || 
-                (proposedBlocks.size() > epoch && proposedBlocks[epoch] != ""))
+                proposedBlocks.find(epoch) != proposedBlocks.end())
                 return {};
-            if (epoch >= proposedBlocks.size()){
-                proposedBlocks.resize(2 * epoch);
-                votes.resize(2 * epoch);
-            }
-            proposedBlocks[epoch] = block.hash();
-            if (tree.isDeepestNotarized(block.parentHash)) {
-                tree.addBelow(block.parentHash, storeBlock(block));
+            proposedBlocks.try_emplace(epoch, block.hash());
+            tree.addBelow(block.parentHash, storeBlock(block));
+            if (tree.isDeepestNotarized(block.parentHash))
                 return broadcast({MessageType::VOTE, block});
-            }
             break;
         case MessageType::VOTE:
-            if (proposedBlocks.size() <= epoch || proposedBlocks[epoch] != block.hash() || 
+            if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() || 
                 votes[epoch].find(message.from()) != votes[epoch].end())
                 return {};
             votes[epoch].insert(message.from());
@@ -64,7 +59,7 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
     return {};
 }
 
-std::vector<Message> HonestNode::atTime(unsigned t){
+std::vector<Message> HonestNode::atTime(unsigned t) {
     LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Received ping at time " << t;
     unsigned epoch = service.getEpoch(t);
     if (!service.isEpochStart(t) || service.getLeader(epoch) != id)
@@ -74,10 +69,10 @@ std::vector<Message> HonestNode::atTime(unsigned t){
     return broadcast({MessageType::PROPOSAL, block});
 }
 
-std::vector<Message> HonestNode::broadcast(Content content){
+std::vector<Message> HonestNode::broadcast(Content content) {
     std::vector<Message> messages;
-    messages.reserve(numOfNodes - 1);
+    messages.reserve(numOfNodes);
     for (unsigned i = 0; i < numOfNodes; i++)
-        messages.push_back({id, i, content});
+        messages.emplace_back(id, i, content);
     return messages;
 }

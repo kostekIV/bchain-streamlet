@@ -11,9 +11,9 @@ namespace {
     bool checkAndLogError(const std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
         if (hvMapping.find(key) == hvMapping.end()) {
             LOG(ERROR) << "No key " << key << " in tree map";
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
 
@@ -91,7 +91,7 @@ bool Tree::isDeepestNotarized(const Hashable& hashable) const { return isDeepest
 
 bool Tree::isDeepestNotarized(const hash_t& hash) const {
     LOG(DEBUG) << "[TREE]: " << "check whether " << hash << " is one of the deepest notarized";
-    if (checkAndLogError(hvMapping, hash))
+    if (!checkAndLogError(hvMapping, hash))
         return false;
     const auto& v = hvMapping.at(hash);
     return v.getStatus() != Status::PRESENT and v.getDepth() == deepestNotarized.get().getDepth();
