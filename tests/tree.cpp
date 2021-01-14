@@ -155,8 +155,26 @@ TEST_CASE_METHOD(TreeTestFixture, "finalization") {
 }
 
 TEST_CASE_METHOD(TreeTestFixture, "rendering generation") {
-    createNotarizedPath(4);
-    createPath(2, 4);
-    TreeRenderer renderer(tree, [](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
-    std::cout << renderer.render() << std::endl;
+    SECTION("rendering single tree") {
+        createNotarizedPath(4);
+        createPath(2, 4);
+        TreeRenderer renderer(tree, [](const Hashable& h) { return std::to_string(castFromHashable(h).id); });
+        std::cout << renderer.render() << std::endl;
+    }
+
+    SECTION("rendering forest") {
+        createNotarizedPath(4);
+        createPath(2, 4);
+
+        TreeTestFixture sibling;
+        sibling.createPath(2);
+        sibling.createNotarizedPath(3, 2);
+
+        auto description = TreeRenderer::renderForest({{tree,         "Node1"},
+                                                       {sibling.tree, "Node2"}},
+                                                      [](const Hashable& h) {
+                                                          return std::to_string(castFromHashable(h).id);
+                                                      });
+        std::cout << description << std::endl;
+    }
 }
