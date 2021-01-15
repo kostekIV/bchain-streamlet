@@ -3,11 +3,20 @@
 #include "scenarios/config.hpp"
 
 namespace {
-    SchedulerType get_scheduler(std::string type) {
+    SchedulerType getScheduler(std::string type) {
         if (type == "simple") {
             return SchedulerType::SIMPLE;
         }
         throw std::runtime_error("Unknown scheduler type is unsupported");
+    }
+
+    ServiceType getService(std::string type) {
+        if (type == "normal") {
+            return ServiceType::NORMAL;
+        } else if (type == "twice") {
+            return ServiceType::TWICE;
+        }
+        throw std::runtime_error("Unknown service type is unsupported");
     }
 }
 
@@ -22,7 +31,8 @@ ScenarioConfig::ScenarioConfig(std::string configFile) {
     dummyNodesCount = config["dummy-nodes"].as<unsigned>();
     dishonestNodesCount = config["dishonest-nodes"].as<unsigned>();
 
-    schedulerType = get_scheduler(config["scheduler-type"].as<std::string>());
+    schedulerType = getScheduler(config["scheduler-type"].as<std::string>());
+    serviceType = getService(config["service-type"].as<std::string>());
 }
 
 std::string ScenarioConfig::getScenarioName() const {
@@ -45,4 +55,8 @@ unsigned ScenarioConfig::getDishonestNodesCount() const {
 
 SchedulerType ScenarioConfig::getSchedulerType() const {
     return schedulerType;
+}
+
+ServiceType ScenarioConfig::getServiceType() const {
+    return serviceType;
 }

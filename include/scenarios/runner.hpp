@@ -6,6 +6,7 @@
 #include "node/node.hpp"
 #include "scenarios/config.hpp"
 #include "scenarios/scheduler_type.hpp"
+#include "scenarios/service_type.hpp"
 
 class Runner {
 public:
@@ -21,4 +22,5 @@ private:
     const unsigned dishonestNodesCount;
 
     const SchedulerType schedulerType;
+    const ServiceType serviceType;
 };
