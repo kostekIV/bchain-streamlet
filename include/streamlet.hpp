@@ -6,10 +6,11 @@
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
 #include "node/honest_node.hpp"
-#include "schedulers/scheduler.hpp"
+#include "schedulers/queue.hpp"
+#include "schedulers/ischeduler.hpp"
+#include "schedulers/base_scheduler.hpp"
 #include "schedulers/simple_scheduler.hpp"
 #include "schedulers/partitioning_scheduler.hpp"
-#include "schedulers/queue.hpp"
 
 #include "scenarios/config.hpp"
 #include "scenarios/runner.hpp"

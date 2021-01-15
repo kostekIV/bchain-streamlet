@@ -2,7 +2,7 @@
 
 #include "logging/easylogging++.h"
 
-PartitioningScheduler::PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes) : IScheduler(nodes) {}
+PartitioningScheduler::PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes) : BaseScheduler(nodes) {}
 
 void PartitioningScheduler::start(unsigned nrRounds) {
     // build the first block together

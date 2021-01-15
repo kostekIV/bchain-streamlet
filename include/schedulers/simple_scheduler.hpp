@@ -5,11 +5,11 @@
 
 #include "node/node.hpp"
 #include "message/message.hpp"
-#include "scheduler.hpp"
+#include "base_scheduler.hpp"
 #include "queue.hpp"
 
 
-class SimpleScheduler : public IScheduler {
+class SimpleScheduler : public BaseScheduler {
 public:
     explicit SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes);
 

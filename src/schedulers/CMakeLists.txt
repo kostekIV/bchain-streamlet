@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.13.0)
 
 
 set(SOURCES
-        scheduler.cpp
+        ischeduler.cpp
+        base_scheduler.cpp
         simple_scheduler.cpp
         partitioning_scheduler.cpp)
 

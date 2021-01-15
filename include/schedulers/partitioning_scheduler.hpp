@@ -5,11 +5,11 @@
 
 #include "node/node.hpp"
 #include "message/message.hpp"
-#include "scheduler.hpp"
+#include "base_scheduler.hpp"
 #include "queue.hpp"
 
 
-class PartitioningScheduler : public IScheduler {
+class PartitioningScheduler : public BaseScheduler {
 public:
     explicit PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes);
 

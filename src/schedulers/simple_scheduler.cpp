@@ -4,7 +4,7 @@
 
 #include "logging/easylogging++.h"
 
-SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes) : IScheduler(nodes) {}
+SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes) : BaseScheduler(nodes) {}
 
 void SimpleScheduler::start(unsigned nrRounds) {
     for (unsigned i = 0; i < nrRounds; i++) {

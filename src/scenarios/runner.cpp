@@ -10,7 +10,7 @@
 #include "round_service.hpp"
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
-#include "schedulers/scheduler.hpp"
+#include "schedulers/ischeduler.hpp"
 #include "schedulers/simple_scheduler.hpp"
 #include "node/honest_node.hpp"
 #include "state/block.hpp"
