@@ -5,8 +5,8 @@
 
 class RoundService {
 public:
-    explicit RoundService(unsigned n, 
-                unsigned epochLength = 2, 
+    explicit RoundService(unsigned n,
+                unsigned epochLength = 2,
                 std::random_device::result_type r = std::random_device{}());
 
     unsigned getLeader(unsigned epoch) const;

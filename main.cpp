@@ -1,3 +1,7 @@
+#include <vector>
+#include <utility>
+#include <string>
+
 #include "streamlet.hpp"
 #include "logging/easylogging++.h"
 
@@ -18,7 +22,25 @@ int main(int argc, char **argv) {
                 el::ConfigurationType::Enabled, enabled);
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    DummyNode node;
-    Message Message{0, 0, {MessageType::PROPOSAL, {"", 0, ""}}};
+    ScenarioConfig config{"./scenarios/honest_with_dummies.yml"};
+    Runner runner{config};
+
+    runner.summary();
+    auto ret = runner.play();
+
+    std::vector<std::pair<const Tree&, std::string>> forest;
+
+    int i = 0;
+    for (const auto& x: ret) {
+        HonestNode* node = dynamic_cast<HonestNode*>(x.get());
+        if (node) {
+            i += 1;
+            forest.emplace_back(node->getTree(), std::to_string(i));
+        }
+    }
+
+    StateRenderer stateRenderer([](const Hashable& h) { return std::to_string(((const Block&) h).epoch); });
+    std::cout << stateRenderer.renderForest(forest);
+
     return 0;
 }
