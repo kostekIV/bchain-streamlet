@@ -20,7 +20,8 @@ set(TEST_SOURCES
         tests/config-test.cpp
         tests/runner-test.cpp
         tests/service-test.cpp
-        tests/honest_node-test.cpp)
+        tests/honest_node-test.cpp
+        tests/queue-test.cpp)
 
 add_executable(tests ${TEST_SOURCES})
 target_link_libraries(tests PUBLIC Catch)
