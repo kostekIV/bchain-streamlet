@@ -1,8 +1,8 @@
 #include <string>
 #include <sstream>
 #include <utility>
-#include "state/tree/state_renderer.hpp"
-#include "state/tree/tree.hpp"
+#include "state/state_renderer.hpp"
+#include "state/tree.hpp"
 
 const std::string StateRenderer::PRESENT_NODE_STYLE("style=\"rounded,bold\"");
 const std::string StateRenderer::NOTARIZED_NODE_STYLE("style=\"rounded,bold\", peripheries=2");

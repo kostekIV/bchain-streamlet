@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 #include <unordered_map>
-#include "state/tree/vertex.hpp"
+#include "vertex.hpp"
 
 class Tree {
 private:

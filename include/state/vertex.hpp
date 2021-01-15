@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state/hashable.hpp"
-#include "state/tree/status.hpp"
+#include "status.hpp"
 
 class Vertex {
 public:

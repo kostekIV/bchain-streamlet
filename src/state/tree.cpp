@@ -3,7 +3,7 @@
 
 #include "logging/easylogging++.h"
 
-#include "state/tree/tree.hpp"
+#include "state/tree.hpp"
 
 #define range(V) (V).begin(), (V).end()
 

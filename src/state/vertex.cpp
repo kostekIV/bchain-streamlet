@@ -1,7 +1,7 @@
 #include <cassert>
 #include "logging/easylogging++.h"
 
-#include "state/tree/vertex.hpp"
+#include "state/vertex.hpp"
 
 Vertex::Vertex(const Hashable& content) :
         content(content),

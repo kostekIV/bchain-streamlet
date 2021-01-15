@@ -15,5 +15,5 @@
 #include "scenarios/config.hpp"
 #include "scenarios/runner.hpp"
 
-#include "state/tree/tree.hpp"
-#include "state/tree/state_renderer.hpp"
+#include "state/tree.hpp"
+#include "state/state_renderer.hpp"

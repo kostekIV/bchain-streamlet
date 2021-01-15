@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "state/hashable.hpp"
-#include "state/tree/tree.hpp"
-#include "state/tree/state_renderer.hpp"
+#include "state/tree.hpp"
+#include "state/state_renderer.hpp"
 
 #define range(V) (V).begin(), (V).end()
 
