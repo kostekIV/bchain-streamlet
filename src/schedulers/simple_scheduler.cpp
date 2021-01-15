@@ -19,7 +19,7 @@ void SimpleScheduler::clockTick() {
     broadcastTime();
 
     LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
-    messages.tryEmptying(std::bind(&SimpleScheduler::sendRec, this, std::placeholders::_1));
+    messages.apply(std::bind(&SimpleScheduler::sendRec, this, std::placeholders::_1));
 
     timeSinceStart++;
 }

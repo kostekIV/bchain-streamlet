@@ -35,7 +35,7 @@ TEST_CASE_METHOD(Comparator, "Pushing vector") {
     REQUIRE(poor == cool);
 }
 
-TEST_CASE_METHOD(Comparator, "Try emptying") {
+TEST_CASE_METHOD(Comparator, "Applying") {
     int counter = 0;
     auto f = [&counter](auto d) -> std::vector<DummyStruct> {
         if (d.id < 5) {
@@ -47,7 +47,7 @@ TEST_CASE_METHOD(Comparator, "Try emptying") {
     };
 
     cool.push({1});
-    cool.tryEmptying(f);
+    cool.apply(f);
     /*
      * 2 3
      * 3 3 4
