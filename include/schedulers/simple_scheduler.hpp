@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
 
 #include "node/node.hpp"
 #include "message/message.hpp"
@@ -24,5 +25,7 @@ private:
 
     void broadcastTime();
 
-    Queue<Message> messages;
+    void sendFromRound(unsigned round);
+
+    std::unordered_map<unsigned,std::vector<Message>> roundMessages;
 };
