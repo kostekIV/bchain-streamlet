@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "schedulers/queue.tpp"
+#include "schedulers/queue.hpp"
 
 #define range(V) (V).begin(), (V).end()
 

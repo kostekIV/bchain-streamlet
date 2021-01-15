@@ -6,7 +6,7 @@
 #include "node/node.hpp"
 #include "message/message.hpp"
 #include "scheduler.hpp"
-#include "queue.tpp"
+#include "queue.hpp"
 
 
 class PartitioningScheduler : public IScheduler {
