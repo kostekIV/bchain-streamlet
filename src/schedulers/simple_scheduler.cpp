@@ -11,7 +11,6 @@ namespace {
             dest.push_back(el);
         }
     }
-
 }
 
 SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes) : BaseScheduler(nodes) {}
