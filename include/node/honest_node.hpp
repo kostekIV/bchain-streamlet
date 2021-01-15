@@ -27,7 +27,7 @@ private:
 
     std::vector<Message> broadcast(Content content);
 
-    const Block& storeBlock(const Block block);
+    const Block& storeBlock(const Block& block);
 
     Tree tree;
     const unsigned id;

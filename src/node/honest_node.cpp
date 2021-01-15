@@ -19,7 +19,7 @@ HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const RoundService& ser
         proposedBlocks.try_emplace(0, genesisBlock.hash());
     }
 
-const Block& HonestNode::storeBlock(const Block block) {
+const Block& HonestNode::storeBlock(const Block& block) {
     blocks.push_back(block);
     return blocks.back();
 }

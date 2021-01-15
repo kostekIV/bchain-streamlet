@@ -10,13 +10,9 @@
 namespace {
     template<typename T>
     int countOfType(std::vector<std::unique_ptr<INode>>& v) {
-        int count = 0;
-        for (auto &x: v) {
-            if (dynamic_cast<T*>(x.get())) {
-                count += 1;
-            }
-        }
-        return count;
+        return std::count_if(v.begin(), v.end(), [&](std::unique_ptr<INode>& x) {
+            return dynamic_cast<T*>(x.get());
+        });
     }
 }
 
