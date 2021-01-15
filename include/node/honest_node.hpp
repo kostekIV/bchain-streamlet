@@ -25,7 +25,7 @@ private:
 
     static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks);
 
-    std::vector<Message> broadcast(Content content);
+    std::vector<Message> broadcast(const Content& content);
 
     const Block& storeBlock(const Block& block);
 

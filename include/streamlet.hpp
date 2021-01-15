@@ -15,5 +15,8 @@
 #include "scenarios/config.hpp"
 #include "scenarios/runner.hpp"
 
-#include "state/tree.hpp"
+#include "state/block.hpp"
+#include "state/hashable.hpp"
 #include "state/state_renderer.hpp"
+#include "state/streamlet_block.hpp"
+#include "state/tree.hpp"

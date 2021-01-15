@@ -9,10 +9,14 @@ hash_t Block::hash() const {
     return parentHash + std::to_string(epoch) + payload;
 }
 
-const Block& Block::castFromHashable(const std::reference_wrapper<const Hashable>& ref){
+const Block& Block::castFromHashable(const std::reference_wrapper<const Hashable>& ref) {
     return *dynamic_cast<const Block *>(&ref.get());
 }
 
-Block Block::createGenesisBlock() {
-    return Block("", 0, "genesis_block");
-}
+Block Block::createGenesisBlock() { return Block("", 0, "genesis_block"); }
+
+hash_t Block::getParentHash() const { return parentHash; }
+
+unsigned Block::getEpoch() const { return epoch; }
+
+std::string Block::getPayload() const { return payload; }
