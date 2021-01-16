@@ -55,7 +55,7 @@ TEST_CASE_METHOD(Comparator, "Pushing vector") {
 TEST_CASE_METHOD(Comparator, "Applying") {
     TestAction action;
 
-    action.queue.push({1});
+    action.queue.push(std::vector<DummyStruct>{1});
     action.queue.applyToAll(action);
     /*
      * 2 3

@@ -3,17 +3,14 @@
 #include <iostream>
 
 enum class ServiceType {
-    NORMAL,
-    TWICE
+    NORMAL
 };
 
 inline std::ostream& operator<<(std::ostream& os, const ServiceType& serviceType) {
     switch (serviceType) {
         case ServiceType::NORMAL:
-            os << "RoundService";
+            os << "RepeatService";
             break;
-        case ServiceType::TWICE:
-            os << "TwiceSerivce"; 
         default:
             throw "Unknow ServiceType";
     }

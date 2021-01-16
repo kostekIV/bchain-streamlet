@@ -1,10 +1,9 @@
 #include "catch2.hpp"
 
-#include "services/round_service.hpp"
-#include "services/twice_service.hpp"
+#include "services/repeat_service.hpp"
 
 TEST_CASE("Generate random payload") {
-    RoundService service(10);
+    RepeatService service(10);
 
     std::string payload1, payload2;
     payload1 = service.getRandomPayload();
@@ -15,8 +14,8 @@ TEST_CASE("Generate random payload") {
     REQUIRE_FALSE(payload1 == payload2);
 }
 
-TEST_CASE("RoundService functionality") {
-    RoundService service(9, 3);
+TEST_CASE("RepeatService functionality") {
+    RepeatService service(9, 3);
 
     REQUIRE(service.getEpoch(0) == 1);
     REQUIRE(service.getEpoch(3) == 2);
@@ -32,7 +31,7 @@ TEST_CASE("RoundService functionality") {
 }
 
 TEST_CASE("DoubleService functionality") {
-    TwiceService service(9, 2);
+    RepeatService service(9, 2, 2);
 
     REQUIRE(service.getLeader(1) == 0);
     REQUIRE(service.getLeader(2) == 0);

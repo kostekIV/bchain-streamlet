@@ -1,12 +1,12 @@
 #include "catch2.hpp"
 
 #include "node/honest_node.hpp"
-#include "services/round_service.hpp"
+#include "services/repeat_service.hpp"
 
 TEST_CASE("HonestNode sends PROPOSE and VOTE") {
     Block genesis{"", 0, "GeNeZis"};
 
-    RoundService service{3};
+    RepeatService service{3};
 
     HonestNode node1{0, 3, service, genesis};
     HonestNode node2{1, 3, service, genesis};
@@ -42,7 +42,7 @@ TEST_CASE("HonestNode notarizes blocks") {
     Block genesis{"", 0, "GeNeZis"};
     Block newBlock{genesis.hash(), 1, "nasfdfa"};
 
-    RoundService service{10};
+    RepeatService service{10};
     HonestNode node{5, 10, service, genesis};
 
     Message proposal{0, 5, {MessageType::PROPOSAL, newBlock}};
@@ -59,7 +59,7 @@ TEST_CASE("HonestNode differentiates votes") {
     Block genesis{"", 0, "GeNeZis"};
     Block newBlock{genesis.hash(), 1, "nasfdfa"};
 
-    RoundService service{10};
+    RepeatService service{10};
     HonestNode node{5, 10, service, genesis};
 
     Message proposal{0, 5, {MessageType::PROPOSAL, newBlock}};
@@ -77,7 +77,7 @@ TEST_CASE("HonestNode ignores proposals not from leaders") {
     Block genesis{"", 0, "GeNeZis"};
     Block newBlock{genesis.hash(), 1, "nasfdfa"};
 
-    RoundService service{10};
+    RepeatService service{10};
     HonestNode node{5, 10, service, genesis};
 
     Message proposal{2, 5, {MessageType::PROPOSAL, newBlock}};
