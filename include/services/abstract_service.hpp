@@ -3,13 +3,13 @@
 #include <string>
 #include <random>
 
-class RoundService {
+class AbstractService {
 public:
-    explicit RoundService(unsigned n,
+    explicit AbstractService(unsigned n,
                 unsigned epochLength = 2,
                 std::random_device::result_type r = std::random_device{}());
 
-    unsigned getLeader(unsigned epoch) const;
+    virtual unsigned getLeader(unsigned epoch) const = 0;
 
     unsigned getEpoch(unsigned round) const;
 
@@ -17,7 +17,7 @@ public:
 
     std::string getRandomPayload() const;
 
-private:
+protected:
     const unsigned n;
     const unsigned epochLength;
     mutable std::default_random_engine generator;

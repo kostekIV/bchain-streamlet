@@ -11,7 +11,7 @@ bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<
     return a + 1 == b and b + 1 == c;
 }
 
-HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const RoundService& service, const Block& genesisBlock):
+HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock):
     id(id),
     numOfNodes(numOfNodes),
     service(service),

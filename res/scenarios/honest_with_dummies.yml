@@ -4,3 +4,4 @@ honest-nodes: 67
 dummy-nodes: 33
 dishonest-nodes: 0
 scheduler-type: "simple"
+service-type: "normal"

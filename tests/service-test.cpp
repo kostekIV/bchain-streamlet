@@ -1,6 +1,7 @@
 #include "catch2.hpp"
 
-#include "round_service.hpp"
+#include "services/round_service.hpp"
+#include "services/twice_service.hpp"
 
 TEST_CASE("Generate random payload") {
     RoundService service(10);
@@ -21,10 +22,21 @@ TEST_CASE("RoundService functionality") {
     REQUIRE(service.getEpoch(3) == 2);
 
     REQUIRE(service.getLeader(1) == 0);
+    REQUIRE(service.getLeader(2) == 1);
     REQUIRE(service.getLeader(12) == 2);
     REQUIRE_THROWS(service.getLeader(0));
 
     REQUIRE(service.isEpochStart(0));
     REQUIRE(service.isEpochStart(3));
     REQUIRE_FALSE(service.isEpochStart(1));
+}
+
+TEST_CASE("DoubleService functionality") {
+    TwiceService service(9, 2);
+
+    REQUIRE(service.getLeader(1) == 0);
+    REQUIRE(service.getLeader(2) == 0);
+    REQUIRE(service.getLeader(3) == 1);
+    REQUIRE(service.getLeader(4) == 1);
+    REQUIRE_THROWS(service.getLeader(0));
 }

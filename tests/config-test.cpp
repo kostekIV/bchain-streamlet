@@ -13,4 +13,5 @@ TEST_CASE("Config has correct values") {
     REQUIRE(config.getDummyNodesCount() == 10);
     REQUIRE(config.getDishonestNodesCount() == 10);
     REQUIRE(config.getSchedulerType() == SchedulerType::SIMPLE);
+    REQUIRE(config.getServiceType() == ServiceType::NORMAL);
 }

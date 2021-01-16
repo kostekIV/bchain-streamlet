@@ -3,6 +3,7 @@
 #include <string>
 
 #include "scenarios/scheduler_type.hpp"
+#include "scenarios/service_type.hpp"
 
 class ScenarioConfig {
 public:
@@ -17,6 +18,8 @@ public:
     unsigned getDishonestNodesCount() const;
 
     SchedulerType getSchedulerType() const;
+
+    ServiceType getServiceType() const;
 private:
     std::string scenarioName;
     unsigned nrOfRounds;
@@ -26,4 +29,5 @@ private:
     unsigned dishonestNodesCount;
 
     SchedulerType schedulerType;
+    ServiceType serviceType;
 };

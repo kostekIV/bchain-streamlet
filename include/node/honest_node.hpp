@@ -6,13 +6,13 @@
 #include <unordered_map>
 
 #include "state/tree/tree.hpp"
-#include "round_service.hpp"
+#include "services/abstract_service.hpp"
 #include "state/block.hpp"
 #include "node/node.hpp"
 
 class HonestNode: public INode {
 public:
-    HonestNode(unsigned id, unsigned numOfNodes, const RoundService& service, const Block& genesisBlock);
+    HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock);
     
     std::vector<Message> onMessageReceive(const Message& message) override;
 
@@ -32,7 +32,7 @@ private:
     Tree tree;
     const unsigned id;
     const unsigned numOfNodes;
-    const RoundService& service;
+    const AbstractService& service;
     std::unordered_map<int, hash_t> proposedBlocks;
     std::unordered_set<hash_t> notarizedBlocks;
     std::unordered_map<int, std::unordered_set<int>> votes;
