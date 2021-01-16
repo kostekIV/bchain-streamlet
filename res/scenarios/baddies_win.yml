@@ -1,0 +1,7 @@
+scenario-name: "Baddies win"
+rounds: 20
+honest-nodes: 2
+dummy-nodes: 0
+dishonest-nodes: 2
+scheduler-type: "simple"
+service-type: "twice"

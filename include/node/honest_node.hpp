@@ -20,14 +20,12 @@ public:
     const Tree& getTree();
 
 private:
-    static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Block>>& blocks);
-
     std::vector<Message> broadcast(const Content& content);
 
     Tree tree;
     const unsigned id;
     const unsigned numOfNodes;
     const AbstractService& service;
-    std::unordered_map<int, hash_t> proposedBlocks;
-    std::unordered_map<int, std::unordered_set<int>> votes;
+    std::unordered_map<unsigned, hash_t> proposedBlocks;
+    std::unordered_map<unsigned, std::unordered_set<int>> votes;
 };

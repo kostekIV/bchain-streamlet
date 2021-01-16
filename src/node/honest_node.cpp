@@ -2,15 +2,6 @@
 
 #include "logging/easylogging++.h"
 
-bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<const Block>>& blocks) {
-    size_t len = blocks.size();
-    if (len < 3) return false;
-    unsigned a = blocks[len - 3].get().getEpoch();
-    unsigned b = blocks[len - 2].get().getEpoch();
-    unsigned c = blocks[len - 1].get().getEpoch();
-    return a + 1 == b and b + 1 == c;
-}
-
 HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock):
         id(id),
         numOfNodes(numOfNodes),
@@ -35,13 +26,14 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
                 proposedBlocks.find(epoch) != proposedBlocks.end())
                 return {};
             proposedBlocks.try_emplace(epoch, block.hash());
-            tree.addBlock(block);
+            if (tree.isPresent(block.getParentHash()))
+                tree.addBlock(block);
             if (tree.isDeepestNotarized(block.getParentHash()))
                 return broadcast({MessageType::VOTE, block});
             break;
         case MessageType::VOTE:
             if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() ||
-                tree.getBlock(block.hash()).getStatus() != Status::PRESENT)
+                !tree.isPresent(block.hash()) || tree.getBlock(block.hash()).getStatus() != Status::PRESENT)
                 return {};
             votes[epoch].insert(message.from());
             if (3 * votes[epoch].size() >= 2 * numOfNodes) {

@@ -21,6 +21,7 @@ set(TEST_SOURCES
         tests/runner-test.cpp
         tests/service-test.cpp
         tests/honest_node-test.cpp
+        tests/dishonest_node-test.cpp
         tests/queue-test.cpp)
 
 add_executable(tests ${TEST_SOURCES})
