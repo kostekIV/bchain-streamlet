@@ -19,14 +19,7 @@ HonestNode::HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& 
     proposedBlocks.try_emplace(0, genesisBlock.hash());
 }
 
-const Block& HonestNode::storeBlock(const Block& block) {
-    blocks.push_back(block);
-    return blocks.back();
-}
-
-const Tree& HonestNode::getTree() {
-    return tree;
-}
+const Tree& HonestNode::getTree() { return tree; }
 
 std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
     LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Received message from node " << message.from()
@@ -42,18 +35,17 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
                 proposedBlocks.find(epoch) != proposedBlocks.end())
                 return {};
             proposedBlocks.try_emplace(epoch, block.hash());
-            tree.addBlock(storeBlock(block));
+            tree.addBlock(block);
             if (tree.isDeepestNotarized(block.getParentHash()))
                 return broadcast({MessageType::VOTE, block});
             break;
         case MessageType::VOTE:
             if (proposedBlocks.find(epoch) == proposedBlocks.end() || proposedBlocks[epoch] != block.hash() ||
-                notarizedBlocks.find(block.hash()) != notarizedBlocks.end())
+                tree.getBlock(block.hash()).getStatus() != Status::PRESENT)
                 return {};
             votes[epoch].insert(message.from());
             if (3 * votes[epoch].size() >= 2 * numOfNodes) {
                 LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Notarizing block with hash " << block.hash();
-                notarizedBlocks.emplace(block.hash());
                 tree.notarize(block);
             }
             break;
