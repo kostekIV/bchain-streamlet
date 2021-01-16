@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    StateRenderer stateRenderer([](const Hashable& h) { return std::to_string(((const Block&) h).epoch); });
+    StateRenderer stateRenderer([](const Block& b) { return std::to_string(b.getEpoch()); });
     std::cout << stateRenderer.renderForest(forest);
 
     return 0;

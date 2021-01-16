@@ -1,8 +1,15 @@
 #include <string>
 #include <sstream>
 #include <utility>
-#include "state/tree/state_renderer.hpp"
-#include "state/tree/tree.hpp"
+#include "state/block.hpp"
+#include "state/tree.hpp"
+#include "state/state_renderer.hpp"
+
+namespace {
+    bool isRoot(const Block& block) {
+        return block.getParentHash() == Block::EMPTY_HASH;
+    }
+}
 
 const std::string StateRenderer::PRESENT_NODE_STYLE("style=\"rounded,bold\"");
 const std::string StateRenderer::NOTARIZED_NODE_STYLE("style=\"rounded,bold\", peripheries=2");
@@ -38,33 +45,33 @@ std::string StateRenderer::renderWithTitle(const std::string& title) const {
     return description.str();
 }
 
-std::string StateRenderer::nodeId(const Vertex& v) const {
-    if (currentTreeId.empty()) return "\"" + contentLabeller(v.getContent()) + "\"";
-    return "\"" + currentTreeId + "-" + contentLabeller(v.getContent()) + "\"";
+std::string StateRenderer::nodeId(const Block& block) const {
+    if (currentTreeId.empty()) return "\"" + contentLabeller(block) + "\"";
+    return "\"" + currentTreeId + "-" + contentLabeller(block) + "\"";
 }
 
 void StateRenderer::renderNodes() const {
-    for (const auto&[_, val] : currentHVMapping) {
-        auto nodeLabel = contentLabeller(val.getContent()), id = nodeId(val);
+    for (const auto&[_, val] : currentHBMapping) {
+        auto nodeLabel = contentLabeller(val), id = nodeId(val);
         auto style = (val.getStatus() == Status::PRESENT) ? PRESENT_NODE_STYLE :
                      (val.getStatus() == Status::NOTARIZED) ? NOTARIZED_NODE_STYLE : FINALIZED_NODE_STYLE;
         description << "\t" << id << " [" << style;
-        if (Tree::isRoot(val)) description << " , label=" << ROOT_SYMBOL;
+        if (isRoot(val)) description << " , label=" << ROOT_SYMBOL;
         else description << " , label=" << nodeLabel;
         description << "]\n";
     }
 }
 
 void StateRenderer::renderEdges() const {
-    for (const auto&[_, val] : currentHVMapping) {
-        if (Tree::isRoot(val)) continue;
+    for (const auto&[_, val] : currentHBMapping) {
+        if (isRoot(val)) continue;
         auto currentId = nodeId(val);
-        auto parentId = nodeId(val.getParent());
+        auto parentId = nodeId(currentHBMapping.at(val.getParentHash()));
         description << "\t" << currentId << "->" << parentId << "\n";
     }
 }
 
 void StateRenderer::setCurrentTreeProperties(const StateRenderer::named_tree_t& namedTree) const {
-    currentHVMapping = namedTree.first.hvMapping;
+    currentHBMapping = namedTree.first.hbMapping;
     currentTreeId = namedTree.second;
 }

@@ -1,19 +1,35 @@
 #pragma once
 
 #include <functional>
-#include "state/hashable.hpp"
+#include "status.hpp"
 
+using hash_t = std::string;
 
-struct Block : Hashable {
+class Block {
+public:
+    static Block createGenesisBlock();
+
+    static const hash_t EMPTY_HASH;
+
     Block(hash_t parentHash, unsigned epoch, std::string payload);
 
+    virtual hash_t getParentHash() const;
+
+    virtual unsigned getEpoch() const;
+
+    virtual std::string getPayload() const;
+
+    virtual Status getStatus() const;
+
+    virtual void notarize() const;
+
+    virtual void finalize() const;
+
+    virtual hash_t hash() const;
+
+private:
     const hash_t parentHash;
     const unsigned epoch;
     const std::string payload;
-
-    hash_t hash() const override;
-
-    static const Block& castFromHashable(const std::reference_wrapper<const Hashable>& ref);
-
-    static Block createGenesisBlock();
+    mutable Status status = Status::PRESENT;
 };
