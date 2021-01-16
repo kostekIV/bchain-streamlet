@@ -5,8 +5,8 @@
 
 #include "node/node.hpp"
 #include "message/message.hpp"
-#include "base_scheduler.hpp"
-#include "queue.hpp"
+#include "schedulers/base_scheduler.hpp"
+#include "schedulers/queue.hpp"
 
 
 class PartitioningScheduler : public BaseScheduler {
