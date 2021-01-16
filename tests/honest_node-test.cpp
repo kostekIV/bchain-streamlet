@@ -1,6 +1,7 @@
 #include "catch2.hpp"
 
 #include "node/honest_node.hpp"
+#include "services/round_service.hpp"
 
 TEST_CASE("HonestNode sends PROPOSE and VOTE") {
     Block genesis{"", 0, "GeNeZis"};

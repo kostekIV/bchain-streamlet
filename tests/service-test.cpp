@@ -1,7 +1,7 @@
 #include "catch2.hpp"
 
-#include "service/round_service.hpp"
-#include "service/twice_service.hpp"
+#include "services/round_service.hpp"
+#include "services/twice_service.hpp"
 
 TEST_CASE("Generate random payload") {
     RoundService service(10);

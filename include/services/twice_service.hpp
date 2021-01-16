@@ -2,9 +2,9 @@
 
 #include "round_service.hpp"
 
-class TwiceService: public RoundService {
+class TwiceService: public AbstractService {
 public:
-    using RoundService::RoundService;
+    using AbstractService::AbstractService;
 
     unsigned getLeader(unsigned epoch) const override;
 };

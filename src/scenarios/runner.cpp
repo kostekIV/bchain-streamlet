@@ -7,8 +7,9 @@
 
 #include "scenarios/runner.hpp"
 
-#include "service/round_service.hpp"
-#include "service/twice_service.hpp"
+#include "services/abstract_service.hpp"
+#include "services/round_service.hpp"
+#include "services/twice_service.hpp"
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
 #include "schedulers/ischeduler.hpp"
@@ -24,7 +25,7 @@ namespace {
         throw std::runtime_error("Unknown scheduler type is unsupported");
     }
 
-    std::unique_ptr<RoundService> getService(ServiceType type, unsigned n) {
+    std::unique_ptr<AbstractService> getService(ServiceType type, unsigned n) {
         switch (type) {
             case ServiceType::NORMAL:
                 return std::make_unique<RoundService>(n);
@@ -65,7 +66,7 @@ std::vector<std::unique_ptr<INode>> Runner::play() {
     std::vector<std::unique_ptr<INode>> allNodes;
 
     unsigned n = honestNodesCount + dummyNodesCount + dishonestNodesCount;
-    std::unique_ptr<RoundService> service = getService(serviceType, n);
+    std::unique_ptr<AbstractService> service = getService(serviceType, n);
     Block genesisBlock = Block::createGenesisBlock();
 
     for (unsigned i = 0; i < honestNodesCount; i++) {
