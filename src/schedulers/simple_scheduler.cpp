@@ -4,6 +4,15 @@
 
 #include "logging/easylogging++.h"
 
+namespace {
+    template <typename T>
+    void insert(std::vector<T>& dest, std::vector<T>&& src) {
+        for (auto& el: src) {
+            dest.push_back(el);
+        }
+    }
+}
+
 SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes) : BaseScheduler(nodes) {}
 
 void SimpleScheduler::start(unsigned nrRounds) {
@@ -17,14 +26,26 @@ const std::vector<std::unique_ptr<INode>>& SimpleScheduler::getNodes() const { r
 void SimpleScheduler::clockTick() {
     LOG(INFO) << "[SimpleScheduler]: " << "Broadcast time " << timeSinceStart;
     broadcastTime();
-
-    LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
-    messages.apply(std::bind(&SimpleScheduler::sendRec, this, std::placeholders::_1));
-
+    sendFromRound(timeSinceStart);
     timeSinceStart++;
+    sendFromRound(timeSinceStart);
 }
 
 void SimpleScheduler::broadcastTime() {
-    for (auto& node: nodes)
-        messages.push(node->atTime(timeSinceStart));
+    auto& thisRoundMessages = roundMessages[timeSinceStart];
+    for (auto& node: nodes) {
+        insert(thisRoundMessages, node->atTime(timeSinceStart));
+    }
 }
+
+void SimpleScheduler::sendFromRound(unsigned round) {
+    auto& messages = roundMessages[round];
+    auto& nextRoundMessages = roundMessages[round + 1];
+
+    LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
+    for (auto& message: messages) {
+        insert(nextRoundMessages, sendRec(message));
+    }
+
+    roundMessages.erase(round);
+};
