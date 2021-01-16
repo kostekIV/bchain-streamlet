@@ -9,7 +9,7 @@ class Block {
 public:
     static Block createGenesisBlock();
 
-    static hash_t EMPTY_HASH;
+    static const hash_t EMPTY_HASH;
 
     Block(hash_t parentHash, unsigned epoch, std::string payload);
 
@@ -27,7 +27,7 @@ public:
 
     virtual hash_t hash() const;
 
-protected:
+private:
     const hash_t parentHash;
     const unsigned epoch;
     const std::string payload;

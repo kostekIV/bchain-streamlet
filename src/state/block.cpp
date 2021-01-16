@@ -6,7 +6,7 @@
 
 #include "state/block.hpp"
 
-hash_t Block::EMPTY_HASH;
+const hash_t Block::EMPTY_HASH;
 
 Block::Block(hash_t parentHash, unsigned epoch, std::string payload) :
         parentHash(std::move(parentHash)), epoch(epoch), payload(std::move(payload)) {}
