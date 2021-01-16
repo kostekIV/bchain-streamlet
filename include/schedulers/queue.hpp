@@ -18,8 +18,6 @@ inline IQueueAction<T>::~IQueueAction() {};
 template<typename T>
 class Queue : public std::queue<T> {
 public:
-    using queue_action_t = std::function<std::vector<T>(T)>;
-
     void push(std::vector<T>&& v) { for (auto& x: v) this->emplace(x); }
 
     void applyToAll(IQueueAction<T>& action) {
