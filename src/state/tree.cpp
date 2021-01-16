@@ -8,8 +8,8 @@
 #define range(V) (V).begin(), (V).end()
 
 namespace {
-    bool checkAndLogError(const std::unordered_map<hash_t, const Vertex>& hvMapping, const hash_t& key) {
-        if (hvMapping.find(key) == hvMapping.end()) {
+    bool checkAndLogError(const std::unordered_map<hash_t, const Block>& hbMapping, const hash_t& key) {
+        if (hbMapping.find(key) == hbMapping.end()) {
             LOG(ERROR) << "No key " << key << " in tree map";
             return false;
         }
@@ -17,86 +17,91 @@ namespace {
     }
 }
 
-Tree::Tree(const Hashable& rootContent, pred_t finalizationPredicate) :
+Tree::Tree(const Block& rootContent, pred_t finalizationPredicate) :
         finalizationPredicate(std::move(finalizationPredicate)),
         rootHash(std::move(rootContent.hash())),
-        hvMapping{{rootHash, rootContent}},
-        deepestNotarized(hvMapping.at(rootHash)),
-        deepestFinalized(deepestNotarized) {
-    auto& root = hvMapping.at(rootHash);
+        hbMapping{{rootHash, rootContent}},
+        depths{{rootHash, 0}},
+        deepestNotarized(rootHash),
+        deepestFinalized(rootHash) {
+    auto& root = hbMapping.at(rootHash);
     root.notarize();
     root.finalize();
 
-    LOG(DEBUG) << "[TREE]: " << "Initialised with \"" << root.getContent().hash() << "\" as root hash";
+    LOG(DEBUG) << "[TREE]: " << "Initialised with \"" << rootHash << "\" as root hash";
 }
 
-bool Tree::isRoot(const Vertex& v) { return v.getDepth() == 0; }
+bool Tree::isRoot(const Block& block) const { return depths.at(block.hash()) == 0; }
 
-const Hashable& Tree::getSomeDeepestNotarized() const {
+const Block& Tree::getSomeDeepestNotarized() const {
     LOG(DEBUG) << "[TREE]: " << "getSomeDeepestNotarized";
-    return deepestNotarized.get().getContent();
+    return hbMapping.at(deepestNotarized);
 }
 
-void Tree::addBelow(const Hashable& parent, const Hashable& child) { addBelow(parent.hash(), child); }
-
-void Tree::addBelow(const hash_t& parentHash, const Hashable& child) {
-    LOG(DEBUG) << "[TREE]: " << "addBelow parent with hash " << parentHash << " child with hash " << child.hash();
-    checkAndLogError(hvMapping, parentHash);
-    const Vertex& parentVertex = hvMapping.at(parentHash);
-    hash_t childHash = child.hash();
-    hvMapping.try_emplace(childHash, child, parentVertex);
+void Tree::addBlock(const Block& child) {
+    hash_t parentHash = child.getParentHash(), childHash = child.hash();
+    LOG(DEBUG) << "[TREE]: " << "addBlock with hash " << childHash;
+    checkAndLogError(hbMapping, parentHash);
+    const Block& parentBlock = hbMapping.at(parentHash);
+    hbMapping.try_emplace(childHash, child);
+    depths.try_emplace(childHash, depths.at(parentHash) + 1);
 }
 
-void Tree::notarize(const Hashable& hashable) {
-    LOG(DEBUG) << "[TREE]: " << "notarize block with hash " << hashable.hash();
-    checkAndLogError(hvMapping, hashable.hash());
-    const Vertex& v = hvMapping.at(hashable.hash());
-    v.notarize();
-    if (v.getDepth() > deepestNotarized.get().getDepth())
-        deepestNotarized = v;
-    tryFinalizeUntil(v);
+void Tree::notarize(const Block& block) { notarize(block.hash()); }
+
+void Tree::notarize(const hash_t& hash) {
+    LOG(DEBUG) << "[TREE]: " << "notarize block with hash " << hash;
+    checkAndLogError(hbMapping, hash);
+    const Block& block = hbMapping.at(hash);
+    block.notarize();
+    if (depths.at(hash) > depths.at(deepestNotarized))
+        deepestNotarized = hash;
+    tryFinalizeUntil(block);
 }
 
-void Tree::tryFinalizeUntil(const Vertex& v) {
-    LOG(DEBUG) << "[TREE]: " << "tryFinalizeUntil vertex with hash " << v.getContent().hash();
-    auto path = getPathFromRootTo(v);
-    hashables_t hashables;
-    std::for_each(range(path), [&hashables](auto v) { hashables.push_back(std::cref(v.get().getContent())); });
-    if (finalizationPredicate(hashables)) {
-        for (int i = path.size() - 2; i >= 0; i--) {
+void Tree::tryFinalizeUntil(const Block& block) {
+    LOG(DEBUG) << "[TREE]: " << "tryFinalizeUntil vertex with hash " << block.hash();
+    blocks_t path = getPathFromRootTo(block);
+    if (finalizationPredicate(path)) {
+        for (unsigned i = path.size() - 2; i >= 0; i--) {
             if (path[i].get().getStatus() == Status::FINALIZED) {
                 break;
             }
             path[i].get().finalize();
         }
-        deepestFinalized = *(path.end() - 2);
+        deepestFinalized = (path.end() - 2)->get().hash();
     }
 }
 
-Tree::vertices_t Tree::getPathFromRootTo(const Vertex& v) {
-    auto current = std::cref(v);
-    vertices_t path = {current};
+Tree::blocks_t Tree::getPathFromRootTo(const Block& block) const {
+    std::reference_wrapper<const Block> current = std::cref(block);
+    blocks_t path = {current};
     while (not isRoot(current)) {
-        current = current.get().getParent();
+        current = hbMapping.at(current.get().getParentHash());
         path.push_back(current);
     }
     std::reverse(range(path));
     return path;
 }
 
-Tree::hashables_t Tree::getFinalizedChain() const {
-    auto finalized = getPathFromRootTo(deepestFinalized);
-    hashables_t result;
-    std::for_each(range(finalized), [&result](auto v) { result.push_back(v.get().getContent()); });
-    return result;
+Tree::blocks_t Tree::getFinalizedChain() const {
+    return getPathFromRootTo(hbMapping.at(deepestFinalized));
 }
 
-bool Tree::isDeepestNotarized(const Hashable& hashable) const { return isDeepestNotarized(hashable.hash()); }
+bool Tree::isDeepestNotarized(const Block& block) const { return isDeepestNotarized(block.hash()); }
 
 bool Tree::isDeepestNotarized(const hash_t& hash) const {
     LOG(DEBUG) << "[TREE]: " << "check whether " << hash << " is one of the deepest notarized";
-    if (!checkAndLogError(hvMapping, hash))
+    if (!checkAndLogError(hbMapping, hash))
         return false;
-    const auto& v = hvMapping.at(hash);
-    return v.getStatus() != Status::PRESENT and v.getDepth() == deepestNotarized.get().getDepth();
+    const auto& block = hbMapping.at(hash);
+    return block.getStatus() != Status::PRESENT and depths.at(hash) == depths.at(deepestNotarized);
+}
+
+bool Tree::isPresent(const hash_t& hash) const {
+    return hbMapping.find(hash) != hbMapping.end();
+}
+
+const Block& Tree::getBlock(const hash_t& hash) const {
+    return hbMapping.at(hash);
 }

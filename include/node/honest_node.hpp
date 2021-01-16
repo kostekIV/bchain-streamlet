@@ -10,10 +10,10 @@
 #include "state/block.hpp"
 #include "node/node.hpp"
 
-class HonestNode: public INode {
+class HonestNode : public INode {
 public:
     HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock);
-    
+
     std::vector<Message> onMessageReceive(const Message& message) override;
 
     std::vector<Message> atTime(unsigned t) override;
@@ -21,9 +21,7 @@ public:
     const Tree& getTree();
 
 private:
-    static const Block& castFromHashable(const std::reference_wrapper<const Hashable>& ref);
-
-    static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks);
+    static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Block>>& blocks);
 
     std::vector<Message> broadcast(const Content& content);
 

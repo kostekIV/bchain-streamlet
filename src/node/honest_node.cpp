@@ -2,12 +2,12 @@
 
 #include "logging/easylogging++.h"
 
-bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<const Hashable>>& blocks) {
+bool HonestNode::finalizationPredicate(const std::vector<std::reference_wrapper<const Block>>& blocks) {
     size_t len = blocks.size();
     if (len < 3) return false;
-    unsigned a = Block::castFromHashable(blocks[len - 3]).getEpoch();
-    unsigned b = Block::castFromHashable(blocks[len - 2]).getEpoch();
-    unsigned c = Block::castFromHashable(blocks[len - 1]).getEpoch();
+    unsigned a = blocks[len - 3].get().getEpoch();
+    unsigned b = blocks[len - 2].get().getEpoch();
+    unsigned c = blocks[len - 1].get().getEpoch();
     return a + 1 == b and b + 1 == c;
 }
 
@@ -42,7 +42,7 @@ std::vector<Message> HonestNode::onMessageReceive(const Message& message) {
                 proposedBlocks.find(epoch) != proposedBlocks.end())
                 return {};
             proposedBlocks.try_emplace(epoch, block.hash());
-            tree.addBelow(block.getParentHash(), storeBlock(block));
+            tree.addBlock(storeBlock(block));
             if (tree.isDeepestNotarized(block.getParentHash()))
                 return broadcast({MessageType::VOTE, block});
             break;
@@ -66,7 +66,7 @@ std::vector<Message> HonestNode::atTime(unsigned t) {
     unsigned epoch = service.getEpoch(t);
     if (!service.isEpochStart(t) || service.getLeader(epoch) != id)
         return {};
-    Block parent = Block::castFromHashable(tree.getSomeDeepestNotarized());
+    const Block& parent = tree.getSomeDeepestNotarized();
     Block block{parent.hash(), epoch, service.getRandomPayload()};
     return broadcast({MessageType::PROPOSAL, block});
 }

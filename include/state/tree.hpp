@@ -3,41 +3,47 @@
 #include <vector>
 #include <functional>
 #include <unordered_map>
-#include "vertex.hpp"
+#include "block.hpp"
 
 class Tree {
 private:
-    using vertices_t = std::vector<std::reference_wrapper<const Vertex>>;
-    using hashables_t = std::vector<std::reference_wrapper<const Hashable>>;
-    using pred_t = std::function<bool(hashables_t)>;
+    using blocks_t = std::vector<std::reference_wrapper<const Block>>;
+    using hashes_t = std::vector<hash_t>;
+    using pred_t = std::function<bool(blocks_t)>;
+
 public:
-    Tree(const Hashable& rootContent, pred_t finalizePredicate);
+    Tree(const Block& rootContent, pred_t finalizePredicate);
 
-    const Hashable& getSomeDeepestNotarized() const;
+    const Block& getSomeDeepestNotarized() const;
 
-    bool isDeepestNotarized(const Hashable& hashable) const;
+    bool isDeepestNotarized(const Block& block) const;
 
     bool isDeepestNotarized(const hash_t& hash) const;
 
-    void addBelow(const Hashable& parent, const Hashable& child);
+    void addBlock(const Block& child);
 
-    void addBelow(const hash_t& parentHash, const Hashable& parent);
+    void notarize(const Block& Block);
 
-    void notarize(const Hashable& hashable);
+    void notarize(const hash_t& hash);
 
-    hashables_t getFinalizedChain() const;
+    blocks_t getFinalizedChain() const;
+
+    bool isPresent(const hash_t& hash) const;
+
+    const Block& getBlock(const hash_t& hash) const;
 
 private:
-    void tryFinalizeUntil(const Vertex& v);
+    void tryFinalizeUntil(const Block& block);
 
-    static vertices_t getPathFromRootTo(const Vertex& v);
+    blocks_t getPathFromRootTo(const Block& v) const;
 
-    static bool isRoot(const Vertex& v);
+    bool isRoot(const Block& block) const;
 
     const pred_t finalizationPredicate;
     const hash_t rootHash;
-    std::unordered_map<hash_t, const Vertex> hvMapping;
-    std::reference_wrapper<const Vertex> deepestNotarized, deepestFinalized;
+    hash_t deepestNotarized, deepestFinalized;
+    std::unordered_map<hash_t, const Block> hbMapping;
+    std::unordered_map<hash_t, unsigned> depths;
 
     friend class StateRenderer;
 };

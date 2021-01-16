@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     START_EASYLOGGINGPP(argc, argv);
 
     el::Configurations defaultConf;
-    std::string enabled = "true";
+    std::string enabled = "false";
 
     // to disable logging pass "false" as first argument
     if (argc > 1) {
@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    StateRenderer stateRenderer([](const Hashable& h) { return std::to_string(((const Block&) h).epoch); });
+    StateRenderer stateRenderer([](const Block& b) { return std::to_string(b.getEpoch()); });
     std::cout << stateRenderer.renderForest(forest);
 
     return 0;
