@@ -21,13 +21,10 @@ void PartitioningScheduler::initialize() {
     for (unsigned i = 0; i < nrOfNodes; i++) {
         if (i < minority) {
             minorityIds.insert(i);
-        } else {
-            majorityIds.insert(i);
         }
     }
 
     LOG(DEBUG) << "PartitioningScheduler initialized with " << nrOfNodes << " from which " << minority << " are in minority";
-
 }
 
 void PartitioningScheduler::start(unsigned nrRounds) {

@@ -48,7 +48,6 @@ private:
     EdgeType getEdgeType(const Message& m);
 
     std::unique_ptr<ISynchronizationDecider> decider;
-    std::unordered_set<unsigned> majorityIds;
     std::unordered_set<unsigned> minorityIds;
     std::vector<std::pair<unsigned, Message>> messages;
     Queue<std::pair<unsigned, Message>> messagesMaj2Maj, messagesMaj2Min, messagesMin2Maj, messagesMin2Min;
