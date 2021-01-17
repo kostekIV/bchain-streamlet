@@ -14,13 +14,13 @@ int main(int argc, char **argv) {
     std::string enabled = "true";
     std::string path = "./scenarios/honest_with_dummies.yml";
 
-    // scenarion path is passed as first argument
+    // to disable logging pass "false" as first argument
     if (argc > 1) {
-        path = argv[1];
+        enabled = argv[1];
     }
-    // to disable logging pass "false" as second argument
+    // scenarion path is passed as second argument
     if (argc > 2) {
-        enabled = argv[2];
+        path = argv[2];
     }
 
     defaultConf.setGlobally(
@@ -28,9 +28,7 @@ int main(int argc, char **argv) {
     el::Loggers::reconfigureLogger("default", defaultConf);
 
     ScenarioConfig config{path};
-    std::cout << "Config done\n";
     Runner runner{config};
-    std::cout << "Runner init done\n";
 
     runner.summary();
     auto ret = runner.play();

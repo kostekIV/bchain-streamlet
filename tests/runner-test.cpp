@@ -29,7 +29,7 @@ TEST_CASE("Runner play") {
     Runner runner{config};
 
     auto ret = runner.play();
-    
+    // on new implementations adjust
     REQUIRE(ret.size() == 30);
 
     int dummyCount = countOfType<DummyNode>(ret);
