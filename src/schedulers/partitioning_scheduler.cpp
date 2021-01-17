@@ -38,21 +38,19 @@ void PartitioningScheduler::start(unsigned nrRounds) {
 
 void PartitioningScheduler::redirectMessagesToQueue(std::vector<Message>&& messages, unsigned round) {
     for (const auto& m: messages) {
-        auto from = m.from();
-        auto to = m.from();
 
         switch (getEdgeType(m)) {
             case MAJ_TO_MAJ:
-                messagesMaj2Maj.push(std::make_pair(round, m));
+                messagesMaj2Maj.push({round, m});
                 break;
             case MAJ_TO_MIN:
-                messagesMaj2Min.push(std::make_pair(round, m));
+                messagesMaj2Min.push({round, m});
                 break;
             case MIN_TO_MIN:
-                messagesMin2Min.push(std::make_pair(round, m));
+                messagesMin2Min.push({round, m});
                 break;
             case MIN_TO_MAJ:
-                messagesMin2Maj.push(std::make_pair(round, m));
+                messagesMin2Maj.push({round, m});
                 break;
         }
     }
