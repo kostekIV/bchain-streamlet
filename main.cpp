@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
                 el::ConfigurationType::Enabled, enabled);
     el::Loggers::reconfigureLogger("default", defaultConf);
 
-    ScenarioConfig config{"./scenarios/honest_with_dummies.yml"};
+    ScenarioConfig config{"./scenarios/partitioning.yml"};
     Runner runner{config};
 
     runner.summary();

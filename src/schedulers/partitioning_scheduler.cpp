@@ -62,6 +62,12 @@ void PartitioningScheduler::clockTick() {
     LOG(INFO) << "Broadcast time " << timeSinceStart;
     broadcastTime();
 
+    beforeAndAfter();
+    timeSinceStart++;
+    beforeAndAfter();
+}
+
+void PartitioningScheduler::beforeAndAfter() {
     messagesMaj2Maj.applyToAll(*this);
     messagesMin2Min.applyToAll(*this);
 
@@ -75,12 +81,11 @@ void PartitioningScheduler::clockTick() {
         redirectMessagesToQueue({mr.second}, mr.first);
     }
     messages.clear();
-    timeSinceStart++;
 }
 
 void PartitioningScheduler::broadcastTime() {
     for (auto& node: nodes) {
-        redirectMessagesToQueue(node->atTime(timeSinceStart), timeSinceStart + 1);
+        redirectMessagesToQueue(node->atTime(timeSinceStart), timeSinceStart);
     }
 }
 
@@ -89,13 +94,8 @@ void PartitioningScheduler::onPop(std::pair<unsigned, Message> round_message) {
     auto res = sendRec(round_message.second);
     auto round = round_message.first;
 
-    if (round < timeSinceStart) {
-        redirectMessagesToQueue(std::move(res), round);
-    } else if (round == timeSinceStart) {
-        std::transform(res.begin(), res.end(), std::back_inserter(messages),
-            [&](Message m) -> std::pair<unsigned, Message> {
-                return std::make_pair(round + 1, m);
-            });
+    if (round <= timeSinceStart) {
+        redirectMessagesToQueue(std::move(res), round + 1);
     } else {
         messages.emplace_back(round + 1, round_message.second);
     }

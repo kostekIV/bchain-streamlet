@@ -1,5 +1,5 @@
 scenario-name: "Honest with dummies"
-rounds: 1000
+rounds: 100
 honest-nodes: 67
 dummy-nodes: 33
 dishonest-nodes: 0

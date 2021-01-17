@@ -23,6 +23,7 @@ public:
 
     unsigned getRepeatLeaderNTimes() const;
     unsigned getSynchronizeEveryN() const;
+    unsigned getEpochLenght() const;
 
 private:
     std::string scenarioName;
@@ -37,4 +38,5 @@ private:
 
     unsigned repeatLeaderNTimes;
     unsigned synchronizeEveryN;
+    unsigned epochLenght;
 };

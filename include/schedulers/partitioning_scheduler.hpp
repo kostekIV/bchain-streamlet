@@ -43,6 +43,8 @@ private:
 
     void broadcastTime();
 
+    void beforeAndAfter();
+
     EdgeType getEdgeType(const Message& m);
 
     std::unique_ptr<ISynchronizationDecider> decider;

@@ -26,4 +26,5 @@ private:
 
     const unsigned repeatLeaderNTimes;
     const unsigned synchronizeEveryN;
+    const unsigned epochLenght;
 };

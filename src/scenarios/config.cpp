@@ -6,7 +6,7 @@ namespace {
     SchedulerType getScheduler(std::string type) {
         if (type == "simple") {
             return SchedulerType::SIMPLE;
-        } else if (type == "[artitioning") {
+        } else if (type == "partitioning") {
             return SchedulerType::PARTITIONING;
         }
         throw std::runtime_error("Unknown scheduler type is unsupported");
@@ -36,6 +36,7 @@ ScenarioConfig::ScenarioConfig(std::string configFile) {
 
     repeatLeaderNTimes = config["repeat-n-times"] ? config["repeat-n-times"].as<unsigned>() : 1;
     synchronizeEveryN = config["synchronize-every-n"] ? config["synchronize-every-n"].as<unsigned>() : 1;
+    epochLenght = config["epoch-len"] ? config["epoch-len"].as<unsigned>() : 2;
 }
 
 std::string ScenarioConfig::getScenarioName() const {
@@ -68,7 +69,10 @@ unsigned ScenarioConfig::getRepeatLeaderNTimes() const {
     return repeatLeaderNTimes;
 }
 
-
 unsigned ScenarioConfig::getSynchronizeEveryN() const {
     return synchronizeEveryN;
+}
+
+unsigned ScenarioConfig::getEpochLenght() const {
+    return epochLenght;
 }

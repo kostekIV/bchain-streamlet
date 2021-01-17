@@ -30,10 +30,10 @@ namespace {
         throw std::runtime_error("Unknown scheduler type is unsupported");
     }
 
-    std::unique_ptr<AbstractService> getService(ServiceType type, unsigned n, unsigned repeatTimes) {
+    std::unique_ptr<AbstractService> getService(ServiceType type, unsigned n, unsigned epochLen, unsigned repeatTimes) {
         switch (type) {
             case ServiceType::NORMAL:
-                return std::make_unique<RepeatService>(n, repeatTimes);
+                return std::make_unique<RepeatService>(n, epochLen, repeatTimes);
             default:
                 throw std::runtime_error("Unknown service type is unsupported");
         }
@@ -48,8 +48,9 @@ Runner::Runner(const ScenarioConfig& config):
     dishonestNodesCount(config.getDishonestNodesCount()),
     schedulerType(config.getSchedulerType()),
     serviceType(config.getServiceType()),
-    repeatLeaderNTimes(repeatLeaderNTimes),
-    synchronizeEveryN(synchronizeEveryN) {}
+    repeatLeaderNTimes(config.getRepeatLeaderNTimes()),
+    synchronizeEveryN(config.getSynchronizeEveryN()),
+    epochLenght(config.getEpochLenght()) {}
 
 void Runner::summary() {
     std::ostringstream summary;
@@ -57,10 +58,12 @@ void Runner::summary() {
     summary << "Scenario will play for " << nrOfRounds << " rounds" << std::endl;
     summary << "Scenario info:" << std::endl;
     summary << "* Scheduler used: " << schedulerType << std::endl;
-    summary << "* Round Serivce used: " << serviceType << std::endl;
+    summary << "* Round Service used: " << serviceType << std::endl;
     summary << "* Honest nodes count: " << honestNodesCount << std::endl;
-    summary << "* Dummy nodes count:  " << dummyNodesCount << std::endl;
-    summary << "* Dishonest nodes count:  " << dishonestNodesCount << std::endl;
+    summary << "* Dummy nodes count: " << dummyNodesCount << std::endl;
+    summary << "* Dishonest nodes count: " << dishonestNodesCount << std::endl;
+    summary << "* Repeat leader?: " << repeatLeaderNTimes << std::endl;
+    summary << "* Synchronize every: " << synchronizeEveryN << std::endl;
 
     std::cout << summary.str();
 }
@@ -69,7 +72,7 @@ std::vector<std::unique_ptr<INode>> Runner::play() {
     std::vector<std::unique_ptr<INode>> allNodes;
 
     unsigned n = honestNodesCount + dummyNodesCount + dishonestNodesCount;
-    std::unique_ptr<AbstractService> service = getService(serviceType, n, repeatLeaderNTimes);
+    std::unique_ptr<AbstractService> service = getService(serviceType, n, epochLenght, repeatLeaderNTimes);
     Block genesisBlock = Block::createGenesisBlock();
 
     for (unsigned i = 0; i < honestNodesCount; i++) {
