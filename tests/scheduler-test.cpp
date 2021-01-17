@@ -112,7 +112,7 @@ TEST_CASE("Partitioning scheduler does not send messages between partitions") {
     std::vector<std::unique_ptr<INode>> nodes;
     std::unique_ptr<ISynchronizationDecider> decider = std::make_unique<TestSynchronizer>(-1);
     for (unsigned i = 0; i < 10; i++) {
-      nodes.emplace_back(std::make_unique<TestNode>());
+        nodes.emplace_back(std::make_unique<TestNode>());
     }
 
     auto* nodeFromMinority = dynamic_cast<TestNode*>(nodes[0].get());
@@ -140,7 +140,7 @@ TEST_CASE("Partitioning scheduler does send messages between partitions after sy
     std::vector<std::unique_ptr<INode>> nodes;
     std::unique_ptr<ISynchronizationDecider> decider = std::make_unique<TestSynchronizer>(20);
     for (unsigned i = 0; i < 10; i++) {
-      nodes.emplace_back(std::make_unique<TestNode>());
+        nodes.emplace_back(std::make_unique<TestNode>());
     }
 
     auto* nodeFromMinority = dynamic_cast<TestNode*>(nodes[0].get());
