@@ -5,7 +5,8 @@
 PartitioningScheduler::PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes,
                                              std::unique_ptr<ISynchronizationDecider>& decider):
         BaseScheduler(nodes),
-        decider(std::move(decider)) {
+        decider(std::move(decider)),
+        action(*this) {
     initialize();
 }
 
@@ -63,13 +64,13 @@ void PartitioningScheduler::clockTick() {
 }
 
 void PartitioningScheduler::beforeAndAfter() {
-    messagesMaj2Maj.applyToAll(*this);
-    messagesMin2Min.applyToAll(*this);
+    messagesMaj2Maj.applyToAll(action);
+    messagesMin2Min.applyToAll(action);
 
     if (decider->shouldSynchronize(timeSinceStart)) {
         LOG(INFO) << "Synchronising nodes in round: " << timeSinceStart;
-        messagesMin2Maj.applyToAll(*this);
-        messagesMaj2Min.applyToAll(*this);
+        messagesMin2Maj.applyToAll(action);
+        messagesMaj2Min.applyToAll(action);
     }
 
     for (const auto& mr: messages) {
@@ -81,18 +82,6 @@ void PartitioningScheduler::beforeAndAfter() {
 void PartitioningScheduler::broadcastTime() {
     for (auto& node: nodes) {
         redirectMessagesToQueue(node->atTime(timeSinceStart), timeSinceStart);
-    }
-}
-
-void PartitioningScheduler::onPop(std::pair<unsigned, Message> roundMessage) {
-    std::vector<std::pair<unsigned, Message>> responses;
-    auto res = sendRec(roundMessage.second);
-    auto round = roundMessage.first;
-
-    if (round <= timeSinceStart) {
-        redirectMessagesToQueue(std::move(res), round + 1);
-    } else {
-        messages.emplace_back(round + 1, roundMessage.second);
     }
 }
 
@@ -114,5 +103,21 @@ PartitioningScheduler::EdgeType PartitioningScheduler::getEdgeType(const Message
         }
     }
 }
+
+void PartitioningScheduler::Action::onPop(std::pair<unsigned, Message> roundMessage) {
+    std::vector<std::pair<unsigned, Message>> responses;
+    auto res = scheduler.sendRec(roundMessage.second);
+    auto round = roundMessage.first;
+
+    if (round <= scheduler.timeSinceStart) {
+        scheduler.redirectMessagesToQueue(std::move(res), round + 1);
+    } else {
+        scheduler.messages.emplace_back(round + 1, roundMessage.second);
+    }
+}
+
+PartitioningScheduler::Action::Action(PartitioningScheduler& scheduler):
+    scheduler(scheduler) {}
+
 
 ISynchronizationDecider::~ISynchronizationDecider() {}

@@ -16,14 +16,12 @@ public:
     virtual ~ISynchronizationDecider() = 0;
 };
 
-class PartitioningScheduler : public BaseScheduler, public IQueueAction<std::pair<unsigned, Message>> {
+class PartitioningScheduler : public BaseScheduler {
 public:
     explicit PartitioningScheduler(std::vector<std::unique_ptr<INode>>& nodes,
                                    std::unique_ptr<ISynchronizationDecider>& decider);
 
     void start(unsigned nrRounds) override;
-
-    void onPop(std::pair<unsigned, Message> rm) override;
 
     ~PartitioningScheduler() = default;
 
@@ -33,6 +31,15 @@ private:
         MAJ_TO_MIN,
         MIN_TO_MAJ,
         MIN_TO_MIN
+    };
+
+    class Action: public IQueueAction<std::pair<unsigned, Message>> {
+    public:
+        Action(PartitioningScheduler& scheduler);
+
+        void onPop(std::pair<unsigned, Message> rm) override;
+    private:
+        PartitioningScheduler& scheduler;
     };
 
     void initialize();
@@ -47,6 +54,7 @@ private:
 
     EdgeType getEdgeType(const Message& m);
 
+    Action action;
     std::unique_ptr<ISynchronizationDecider> decider;
     std::unordered_set<unsigned> minorityIds;
     std::vector<std::pair<unsigned, Message>> messages;
