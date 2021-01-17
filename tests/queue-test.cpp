@@ -20,6 +20,23 @@ struct Comparator {
     Queue<DummyStruct> cool;
 };
 
+struct TestAction: public IQueueAction<DummyStruct> {
+
+    TestAction(): counter(0) {}
+
+    void onPop(DummyStruct d) override {
+        if (d.id < 5) {
+            counter += 2;
+            queue.push({{d.id + 1}, {d.id + 2}});
+        }
+
+    };
+
+    int counter;
+    Queue<DummyStruct> queue;
+
+};
+
 TEST_CASE_METHOD(Comparator, "Pushing vector") {
     std::vector<DummyStruct> dummies = {{0},
                                         {1},
@@ -36,18 +53,10 @@ TEST_CASE_METHOD(Comparator, "Pushing vector") {
 }
 
 TEST_CASE_METHOD(Comparator, "Applying") {
-    int counter = 0;
-    auto f = [&counter](auto d) -> std::vector<DummyStruct> {
-        if (d.id < 5) {
-            counter += 2;
-            return {{d.id + 1},
-                    {d.id + 2}};
-        }
-        return {};
-    };
+    TestAction action;
 
-    cool.push({1});
-    cool.apply(f);
+    action.queue.push(std::vector<DummyStruct>{1});
+    action.queue.applyToAll(action);
     /*
      * 2 3
      * 3 3 4
@@ -60,6 +69,6 @@ TEST_CASE_METHOD(Comparator, "Applying") {
      * ...
      */
 
-    REQUIRE(cool.empty());
-    REQUIRE(counter == 14);
+    REQUIRE(action.queue.empty());
+    REQUIRE(action.counter == 14);
 }

@@ -23,4 +23,8 @@ private:
 
     const SchedulerType schedulerType;
     const ServiceType serviceType;
+
+    const unsigned repeatLeaderNTimes;
+    const unsigned synchronizeEveryN;
+    const unsigned epochLenght;
 };

@@ -20,6 +20,11 @@ public:
     SchedulerType getSchedulerType() const;
 
     ServiceType getServiceType() const;
+
+    unsigned getRepeatLeaderNTimes() const;
+    unsigned getSynchronizeEveryN() const;
+    unsigned getEpochLenght() const;
+
 private:
     std::string scenarioName;
     unsigned nrOfRounds;
@@ -30,4 +35,8 @@ private:
 
     SchedulerType schedulerType;
     ServiceType serviceType;
+
+    unsigned repeatLeaderNTimes;
+    unsigned synchronizeEveryN;
+    unsigned epochLenght;
 };

@@ -6,15 +6,15 @@ namespace {
     SchedulerType getScheduler(std::string type) {
         if (type == "simple") {
             return SchedulerType::SIMPLE;
+        } else if (type == "partitioning") {
+            return SchedulerType::PARTITIONING;
         }
         throw std::runtime_error("Unknown scheduler type is unsupported");
     }
 
     ServiceType getService(std::string type) {
-        if (type == "normal") {
-            return ServiceType::NORMAL;
-        } else if (type == "twice") {
-            return ServiceType::TWICE;
+        if (type == "repeating") {
+            return ServiceType::REPEATING_LEADER;
         }
         throw std::runtime_error("Unknown service type is unsupported");
     }
@@ -33,6 +33,10 @@ ScenarioConfig::ScenarioConfig(std::string configFile) {
 
     schedulerType = getScheduler(config["scheduler-type"].as<std::string>());
     serviceType = getService(config["service-type"].as<std::string>());
+
+    repeatLeaderNTimes = config["repeat-n-times"] ? config["repeat-n-times"].as<unsigned>() : 1;
+    synchronizeEveryN = config["synchronize-every-n"] ? config["synchronize-every-n"].as<unsigned>() : 1;
+    epochLenght = config["epoch-len"] ? config["epoch-len"].as<unsigned>() : 2;
 }
 
 std::string ScenarioConfig::getScenarioName() const {
@@ -59,4 +63,16 @@ SchedulerType ScenarioConfig::getSchedulerType() const {
 
 ServiceType ScenarioConfig::getServiceType() const {
     return serviceType;
+}
+
+unsigned ScenarioConfig::getRepeatLeaderNTimes() const {
+    return repeatLeaderNTimes;
+}
+
+unsigned ScenarioConfig::getSynchronizeEveryN() const {
+    return synchronizeEveryN;
+}
+
+unsigned ScenarioConfig::getEpochLenght() const {
+    return epochLenght;
 }
