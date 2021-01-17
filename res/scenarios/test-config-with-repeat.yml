@@ -4,6 +4,6 @@ honest-nodes: 10
 dummy-nodes: 10
 dishonest-nodes: 10
 scheduler-type: "simple"
-service-type: "normal"
+service-type: "repeating"
 repeat-n-times: 12
 synchronize-every-n: 10

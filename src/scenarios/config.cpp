@@ -13,8 +13,8 @@ namespace {
     }
 
     ServiceType getService(std::string type) {
-        if (type == "normal") {
-            return ServiceType::NORMAL;
+        if (type == "repeating") {
+            return ServiceType::REPEATING_LEADER;
         }
         throw std::runtime_error("Unknown service type is unsupported");
     }

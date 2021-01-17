@@ -4,7 +4,7 @@
 
 class Synchronizer: public ISynchronizationDecider {
 public:
-    Synchronizer(unsigned synchronizeEveryN);
+    explicit Synchronizer(unsigned synchronizeEveryN);
 
     bool shouldSynchronize(unsigned round) override;
 private:

@@ -4,6 +4,6 @@ honest-nodes: 10
 dummy-nodes: 0
 dishonest-nodes: 0
 scheduler-type: "partitioning"
-service-type: "normal"
+service-type: "repeating"
 repeat-n-times: 3
 synchronize-every-n: 13

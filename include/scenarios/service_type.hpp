@@ -3,12 +3,12 @@
 #include <iostream>
 
 enum class ServiceType {
-    NORMAL
+    REPEATING_LEADER
 };
 
 inline std::ostream& operator<<(std::ostream& os, const ServiceType& serviceType) {
     switch (serviceType) {
-        case ServiceType::NORMAL:
+        case ServiceType::REPEATING_LEADER:
             os << "RepeatService";
             break;
         default:

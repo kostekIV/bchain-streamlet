@@ -32,7 +32,7 @@ namespace {
 
     std::unique_ptr<AbstractService> getService(ServiceType type, unsigned n, unsigned epochLen, unsigned repeatTimes) {
         switch (type) {
-            case ServiceType::NORMAL:
+            case ServiceType::REPEATING_LEADER:
                 return std::make_unique<RepeatService>(n, epochLen, repeatTimes);
             default:
                 throw std::runtime_error("Unknown service type is unsupported");

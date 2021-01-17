@@ -84,15 +84,15 @@ void PartitioningScheduler::broadcastTime() {
     }
 }
 
-void PartitioningScheduler::onPop(std::pair<unsigned, Message> round_message) {
+void PartitioningScheduler::onPop(std::pair<unsigned, Message> roundMessage) {
     std::vector<std::pair<unsigned, Message>> responses;
-    auto res = sendRec(round_message.second);
-    auto round = round_message.first;
+    auto res = sendRec(roundMessage.second);
+    auto round = roundMessage.first;
 
     if (round <= timeSinceStart) {
         redirectMessagesToQueue(std::move(res), round + 1);
     } else {
-        messages.emplace_back(round + 1, round_message.second);
+        messages.emplace_back(round + 1, roundMessage.second);
     }
 }
 
