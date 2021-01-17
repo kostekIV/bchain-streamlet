@@ -46,8 +46,9 @@ std::vector<Message> DishonestNode::onMessageReceive(const Message& message) {
     bool mischief = message.content().messageType == MessageType::PROPOSAL and
         dishonestNodes.find(message.from()) != dishonestNodes.end();
 
-    if(mischief)
+    if (mischief) {
         LOG(DEBUG) << "[DISHONEST NODE " << id << "]: " << "Entering mischief mode";
+    }
     
     switch (message.content().messageType) {
         case MessageType::PROPOSAL:
@@ -144,7 +145,7 @@ void DishonestNode::handleVote(const Message& message, unsigned k) {
 
     if (proposedBlocks[k].find(epoch) == proposedBlocks[k].end() || proposedBlocks[k][epoch] != block.hash() ||
         !trees[k].isPresent(block.hash()) || trees[k].getBlock(block.hash()).getStatus() != Status::PRESENT) {
-            return;
+        return;
     }
     
     votes[k][epoch].insert(message.from());

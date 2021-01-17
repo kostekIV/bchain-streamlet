@@ -31,5 +31,5 @@ private:
     const unsigned numOfNodes;
     const AbstractService& service;
     std::unordered_map<unsigned, hash_t> proposedBlocks;
-    std::unordered_map<unsigned, std::unordered_set<int>> votes;
+    std::unordered_map<unsigned, std::unordered_set<unsigned>> votes;
 };
