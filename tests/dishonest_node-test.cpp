@@ -2,12 +2,12 @@
 #include "catch2.hpp"
 #include "node/honest_node.hpp"
 #include "node/dishonest_node.hpp"
-#include "services/round_service.hpp"
+#include "services/repeat_service.hpp"
 
 TEST_CASE("DishonestNode behaves like a proper node") {
     Block genesis{"", 0, "GeNeZis"};
 
-    RoundService service{3};
+    RepeatService service{3};
 
     std::unordered_set<unsigned> dishonestNodes{2};
 
@@ -28,7 +28,7 @@ TEST_CASE("DishonestNode behaves like a proper node") {
 TEST_CASE("DishonestNode likes mischief") {
     Block genesis{"", 0, "GeNeZis"};
 
-    RoundService service{4};
+    RepeatService service{4};
 
     std::unordered_set<unsigned> dishonestNodes{0};
 
