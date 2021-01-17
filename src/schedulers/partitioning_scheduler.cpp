@@ -119,5 +119,4 @@ void PartitioningScheduler::Action::onPop(std::pair<unsigned, Message> roundMess
 PartitioningScheduler::Action::Action(PartitioningScheduler& scheduler):
     scheduler(scheduler) {}
 
-
 ISynchronizationDecider::~ISynchronizationDecider() {}
