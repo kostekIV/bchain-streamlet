@@ -1,6 +1,6 @@
 #include <vector>
 
-namespace Utils{
+namespace Utils {
     template <typename T>
     void insert(std::vector<T>& dest, std::vector<T>&& src) {
         for (auto&& el: src) {

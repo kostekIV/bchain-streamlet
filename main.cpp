@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    StateRenderer stateRenderer([](const Block& b) { return  std::to_string(b.getEpoch()) + "\\n" + b.hash().substr(0, 5); });
+    StateRenderer stateRenderer([](const Block& b) { return std::to_string(b.getEpoch()) + "\\n" + b.hash().substr(0, 5); });
     std::cout << stateRenderer.renderForest(forest);
 
     return 0;
