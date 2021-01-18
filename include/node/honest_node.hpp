@@ -7,9 +7,9 @@
 #include "services/abstract_service.hpp"
 #include "state/tree.hpp"
 #include "state/block.hpp"
-#include "node/node.hpp"
+#include "node/base_node.hpp"
 
-class HonestNode : public INode {
+class HonestNode : public BaseNode {
 public:
     HonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock);
 
@@ -20,14 +20,16 @@ public:
     const Tree& getTree();
 
 private:
-    static bool finalizationPredicate(const std::vector<std::reference_wrapper<const Block>>& blocks);
-
     std::vector<Message> broadcast(const Content& content);
+
+    std::vector<Message> handlePropose(const Message& message);
+
+    void handleVote(const Message& message);
 
     Tree tree;
     const unsigned id;
     const unsigned numOfNodes;
     const AbstractService& service;
-    std::unordered_map<int, hash_t> proposedBlocks;
-    std::unordered_map<int, std::unordered_set<int>> votes;
+    std::unordered_map<unsigned, hash_t> proposedBlocks;
+    std::unordered_map<unsigned, std::unordered_set<unsigned>> votes;
 };

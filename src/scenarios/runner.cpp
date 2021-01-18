@@ -12,10 +12,11 @@
 #include "services/synchronizer.hpp"
 #include "node/node.hpp"
 #include "node/dummy_node.hpp"
+#include "node/honest_node.hpp"
+#include "node/dishonest_node.hpp"
 #include "schedulers/ischeduler.hpp"
 #include "schedulers/simple_scheduler.hpp"
 #include "schedulers/partitioning_scheduler.hpp"
-#include "node/honest_node.hpp"
 #include "state/block.hpp"
 
 namespace {
@@ -81,8 +82,12 @@ std::vector<std::unique_ptr<INode>> Runner::play() {
     for (unsigned i = 0; i < dummyNodesCount; i++) {
         allNodes.emplace_back(std::make_unique<DummyNode>());
     }
-    for (unsigned i = 0; i < dishonestNodesCount; i++) {
-        // ToDo initialize
+    std::unordered_set<unsigned> dishonestNodes;
+    for (unsigned i = honestNodesCount + dummyNodesCount; i < n; i++) {
+        dishonestNodes.insert(i);
+    }
+    for (unsigned i = honestNodesCount + dummyNodesCount; i < n; i++) {
+        allNodes.emplace_back(std::make_unique<DishonestNode>(i, n, *service, genesisBlock, dishonestNodes));
     }
     std::unique_ptr<IScheduler> scheduler = getScheduler(schedulerType, allNodes, synchronizeEveryN);
 

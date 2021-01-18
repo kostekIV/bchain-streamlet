@@ -1,17 +1,11 @@
 #include <functional>
 
 #include "schedulers/simple_scheduler.hpp"
+#include "utils.hpp"
 
 #include "logging/easylogging++.h"
 
-namespace {
-    template <typename T>
-    void insert(std::vector<T>& dest, std::vector<T>&& src) {
-        for (auto& el: src) {
-            dest.push_back(el);
-        }
-    }
-}
+
 
 SimpleScheduler::SimpleScheduler(std::vector<std::unique_ptr<INode>>& nodes) : BaseScheduler(nodes) {}
 
@@ -34,7 +28,7 @@ void SimpleScheduler::clockTick() {
 void SimpleScheduler::broadcastTime() {
     auto& thisRoundMessages = roundMessages[timeSinceStart];
     for (auto& node: nodes) {
-        insert(thisRoundMessages, node->atTime(timeSinceStart));
+        utils::insert(thisRoundMessages, node->atTime(timeSinceStart));
     }
 }
 
@@ -44,7 +38,7 @@ void SimpleScheduler::sendFromRound(unsigned round) {
 
     LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
     for (auto& message: messages) {
-        insert(nextRoundMessages, sendRec(message));
+        utils::insert(nextRoundMessages, sendRec(message));
     }
 
     roundMessages.erase(round);

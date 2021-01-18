@@ -57,7 +57,7 @@ void StateRenderer::renderNodes() const {
                      (val.getStatus() == Status::NOTARIZED) ? NOTARIZED_NODE_STYLE : FINALIZED_NODE_STYLE;
         description << "\t" << id << " [" << style;
         if (isRoot(val)) description << " , label=" << ROOT_SYMBOL;
-        else description << " , label=" << nodeLabel;
+        else description << " , label=\"" << nodeLabel << "\"";
         description << "]\n";
     }
 }

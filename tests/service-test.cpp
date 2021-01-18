@@ -30,7 +30,7 @@ TEST_CASE("RepeatService functionality") {
     REQUIRE_FALSE(service.isEpochStart(1));
 }
 
-TEST_CASE("DoubleService functionality") {
+TEST_CASE("RepeatService with repeating") {
     RepeatService service(9, 2, 2);
 
     REQUIRE(service.getLeader(1) == 0);

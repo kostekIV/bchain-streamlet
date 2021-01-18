@@ -2,6 +2,7 @@
 
 #include "node/dummy_node.hpp"
 #include "node/honest_node.hpp"
+#include "node/dishonest_node.hpp"
 #include "scenarios/config.hpp"
 #include "scenarios/scheduler_type.hpp"
 #include "scenarios/runner.hpp"
@@ -29,11 +30,14 @@ TEST_CASE("Runner play") {
 
     auto ret = runner.play();
     // on new implementations adjust
-    REQUIRE(ret.size() == 20);
+    REQUIRE(ret.size() == 30);
 
     int dummyCount = countOfType<DummyNode>(ret);
     REQUIRE(dummyCount == 10);
 
     int honestCount = countOfType<HonestNode>(ret);
     REQUIRE(honestCount == 10);
+
+    int dishonestCount = countOfType<DishonestNode>(ret);
+    REQUIRE(dishonestCount == 10);
 }

@@ -4,7 +4,7 @@
 
 #include "node/node.hpp"
 
-class DummyNode: public INode {
+class DummyNode : public INode {
 public:
     std::vector<Message> onMessageReceive(const Message& message) override;
     std::vector<Message> atTime(unsigned t) override;
