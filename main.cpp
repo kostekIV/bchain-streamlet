@@ -11,14 +11,14 @@ int main(int argc, char **argv) {
     START_EASYLOGGINGPP(argc, argv);
 
     el::Configurations defaultConf;
-    std::string enabled = "true";
+    std::string enabled = "false";
     std::string path = "./scenarios/honest_with_dummies.yml";
 
-    // to disable logging pass "false" as first argument
+    // to disable/enable logging pass "false/true" as first argument
     if (argc > 1) {
         enabled = argv[1];
     }
-    // scenarion path is passed as second argument
+    // scenario path is passed as second argument
     if (argc > 2) {
         path = argv[2];
     }
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     ScenarioConfig config{path};
     Runner runner{config};
 
-    runner.summary();
+    std::cerr << runner.summary();
     auto ret = runner.play();
 
     std::vector<std::pair<const Tree&, std::string>> forest;

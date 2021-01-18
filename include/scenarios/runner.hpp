@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <memory>
 
@@ -12,7 +13,7 @@ class Runner {
 public:
     Runner(const ScenarioConfig& config);
     std::vector<std::unique_ptr<INode>> play();
-    void summary();
+    std::string summary();
 private:
     const std::string scenarioName;
     const unsigned nrOfRounds;

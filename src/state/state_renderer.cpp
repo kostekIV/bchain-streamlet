@@ -72,6 +72,7 @@ void StateRenderer::renderEdges() const {
 }
 
 void StateRenderer::setCurrentTreeProperties(const StateRenderer::named_tree_t& namedTree) const {
-    currentHBMapping = namedTree.first.hbMapping;
+    currentHBMapping.clear();
+    currentHBMapping.insert(namedTree.first.hbMapping.begin(), namedTree.first.hbMapping.end());
     currentTreeId = namedTree.second;
 }

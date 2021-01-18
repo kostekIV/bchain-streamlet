@@ -1,5 +1,3 @@
-
-#include <iostream>
 #include <vector>
 #include <memory>
 
@@ -53,7 +51,7 @@ Runner::Runner(const ScenarioConfig& config):
     synchronizeEveryN(config.getSynchronizeEveryN()),
     epochLenght(config.getEpochLenght()) {}
 
-void Runner::summary() {
+std::string Runner::summary() {
     std::ostringstream summary;
     summary << "Scenario Name: " << scenarioName << std::endl;
     summary << "Scenario will play for " << nrOfRounds << " rounds" << std::endl;
@@ -64,9 +62,10 @@ void Runner::summary() {
     summary << "* Dummy nodes count: " << dummyNodesCount << std::endl;
     summary << "* Dishonest nodes count: " << dishonestNodesCount << std::endl;
     summary << "* Repeat leader?: " << repeatLeaderNTimes << std::endl;
-    summary << "* Synchronize every: " << synchronizeEveryN << std::endl;
+    summary << "* Synchronize every?: " << synchronizeEveryN << std::endl;
+    summary << "* Epoch lenght?: " << epochLenght << std::endl;
 
-    std::cout << summary.str();
+    return summary.str();
 }
 
 std::vector<std::unique_ptr<INode>> Runner::play() {

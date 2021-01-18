@@ -24,3 +24,5 @@ std::string AbstractService::getRandomPayload() const {
         payload[i] = CHARS[distribution(generator)];
     return payload;
 }
+
+AbstractService::~AbstractService() {}
