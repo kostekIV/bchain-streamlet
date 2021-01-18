@@ -33,8 +33,8 @@ will run the scenario and outptu forest state of the honest nodes at the end of 
 To create new scenario to run just create yaml file with following entries
 ```yml
 scenario-name: "Test Config"  # Just name given to the scenario
-rounds: 10                    # Scenario will run for #rounds amount time.
-honest-nodes: 10              # Count of honest nodes following streamlet protocol
+rounds: 10                    # Scenario will run for #rounds
+honest-nodes: 10              # Number of honest nodes following Streamlet protocol
 dummy-nodes: 10               # Count of dummy nodes which do nothing
 dishonest-nodes:              # Count of nodes trying to make ruckus in the protocol
 scheduler-type: "simple"      # one of ["simple", "partitioning"], simple will deliver messages from last round. Partitionig will partition the network and for #synchronie-every-n keep two subnetworks separated
