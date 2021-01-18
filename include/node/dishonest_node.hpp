@@ -10,7 +10,8 @@
 
 class DishonestNode : public BaseNode {
 public:
-    DishonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service, const Block& genesisBlock, std::unordered_set<unsigned> dishonestNodes);
+    DishonestNode(unsigned id, unsigned numOfNodes, const AbstractService& service,
+        const Block& genesisBlock, std::unordered_set<unsigned> dishonestNodes);
 
     std::vector<Message> onMessageReceive(const Message& message) override;
 

@@ -9,11 +9,10 @@ DishonestNode::DishonestNode(unsigned id, unsigned numOfNodes, const AbstractSer
         firstHalf(true),
         numOfNodes(numOfNodes),
         service(service),
-        trees({{genesisBlock, DishonestNode::finalizationPredicate}, {genesisBlock, DishonestNode::finalizationPredicate}}),
+        trees{{genesisBlock, DishonestNode::finalizationPredicate},
+        {genesisBlock, DishonestNode::finalizationPredicate}},
+        proposedBlocks{{{0, genesisBlock.hash()}}, {{0, genesisBlock.hash()}}},
         dishonestNodes(dishonestNodes) {
-    proposedBlocks[0].try_emplace(0, genesisBlock.hash());
-    proposedBlocks[1].try_emplace(0, genesisBlock.hash());
-
     for (unsigned i = 0; i < numOfNodes; i++) {
         allNodes.insert(i);
     }
@@ -64,12 +63,7 @@ std::vector<Message> DishonestNode::onMessageReceive(const Message& message) {
     if (mischief) {
         firstHalf = !firstHalf;
     }
-
-    if (messages1.size() > 0) {
-        return messages1;
-    } else {
-        return messages2;
-    }
+    return messages1.size() > 0 ? messages1 : messages2;
 }
 
 std::vector<Message> DishonestNode::atTime(unsigned t) {
@@ -82,7 +76,7 @@ std::vector<Message> DishonestNode::atTime(unsigned t) {
     }
 
     auto messages = preparePropose(epoch, 0);
-    Utils::insert(messages, preparePropose(epoch, 1));
+    utils::insert(messages, preparePropose(epoch, 1));
     
     return messages;
 }
@@ -93,7 +87,7 @@ std::vector<Message> DishonestNode::preparePropose(unsigned epoch, unsigned k) {
     Block block{parent.hash(), epoch, service.getRandomPayload()};
 
     auto messages = broadcast({MessageType::PROPOSAL, block}, honestNodesFractions[k]);
-    Utils::insert(messages, broadcast({MessageType::PROPOSAL, block}, dishonestNodes));
+    utils::insert(messages, broadcast({MessageType::PROPOSAL, block}, dishonestNodes));
     
     return messages;
 }
@@ -132,7 +126,7 @@ std::vector<Message> DishonestNode::handlePropose(const Message& message, bool m
                 messages = broadcastAll({MessageType::VOTE, block});
             } else {
                 messages = broadcast({MessageType::VOTE, block}, honestNodesFractions[k]);
-                Utils::insert(messages, broadcast({MessageType::VOTE, block}, dishonestNodes));
+                utils::insert(messages, broadcast({MessageType::VOTE, block}, dishonestNodes));
             }
         }
     }

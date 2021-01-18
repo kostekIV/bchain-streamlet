@@ -28,7 +28,7 @@ void SimpleScheduler::clockTick() {
 void SimpleScheduler::broadcastTime() {
     auto& thisRoundMessages = roundMessages[timeSinceStart];
     for (auto& node: nodes) {
-        Utils::insert(thisRoundMessages, node->atTime(timeSinceStart));
+        utils::insert(thisRoundMessages, node->atTime(timeSinceStart));
     }
 }
 
@@ -38,7 +38,7 @@ void SimpleScheduler::sendFromRound(unsigned round) {
 
     LOG(INFO) << "[SimpleScheduler]: " << "Sending pending " << messages.size() << " messages";
     for (auto& message: messages) {
-        Utils::insert(nextRoundMessages, sendRec(message));
+        utils::insert(nextRoundMessages, sendRec(message));
     }
 
     roundMessages.erase(round);
