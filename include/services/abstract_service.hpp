@@ -17,6 +17,8 @@ public:
 
     std::string getRandomPayload() const;
 
+    virtual ~AbstractService() = 0;
+
 protected:
     const unsigned n;
     const unsigned epochLength;
