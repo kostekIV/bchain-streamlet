@@ -40,8 +40,8 @@ To create new scenario to run just create yaml file with following entries
 scenario-name: "Test Config"  # Just name given to the scenario
 rounds: 10                    # Scenario will run for #rounds
 honest-nodes: 10              # Number of honest nodes following Streamlet protocol
-dummy-nodes: 10               # Count of dummy nodes which do nothing
-dishonest-nodes:              # Count of nodes trying to make ruckus in the protocol
+dummy-nodes: 10               # Number of dummy nodes which do nothing
+dishonest-nodes:              # Number of nodes trying to make mischief in the protocol
 scheduler-type: "simple"      # one of ["simple", "partitioning"], simple will deliver messages from last round. Partitionig will partition the network and for #synchronize-every-n keep two subnetworks separated
 service-type: "repeating"     # for now only option is "repeating"
 repeat-n-times: 12            # Optional, default to 1, number of times the same node will be the epoch leader.
