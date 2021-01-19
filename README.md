@@ -34,6 +34,8 @@ To visualize the graph we recommend the program `dot` from *Graphviz*.
 dot -Tpng < forest_state > forest_state.png
 ```
 
+Example scenarios are located in [scenarios](res/scenarios) folder.
+
 ### Creating your own scenario
 To create new scenario to run just create yaml file with following entries
 ```yml
