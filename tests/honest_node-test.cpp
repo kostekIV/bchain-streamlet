@@ -51,8 +51,25 @@ TEST_CASE("HonestNode notarizes blocks") {
 
     for (unsigned i = 0; i < 7; i++)
         node.onMessageReceive({i, 5, {MessageType::VOTE, newBlock}});
-    
+
     REQUIRE(node.getTree().isDeepestNotarized(newBlock));
+}
+
+TEST_CASE("HonestNode does not notarize block if no more than 2/3 votes") {
+    Block genesis{"", 0, "GeNeZis"};
+    Block newBlock{genesis.hash(), 1, "nasfdfa"};
+
+    RepeatService service{9};
+    HonestNode node{5, 9, service, genesis};
+
+    Message proposal{0, 5, {MessageType::PROPOSAL, newBlock}};
+
+    node.onMessageReceive(proposal);
+
+    for (unsigned i = 0; i < 6; i++)
+        node.onMessageReceive({i, 5, {MessageType::VOTE, newBlock}});
+
+    REQUIRE(node.getTree().isDeepestNotarized(genesis));
 }
 
 TEST_CASE("HonestNode differentiates votes") {

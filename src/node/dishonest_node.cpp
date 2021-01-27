@@ -143,7 +143,7 @@ void DishonestNode::handleVote(const Message& message, unsigned k) {
     }
     
     votes[k][epoch].insert(message.from());
-    if (3 * votes[k][epoch].size() >= 2 * numOfNodes) {
+    if (3 * votes[k][epoch].size() > 2 * numOfNodes) {
         LOG(DEBUG) << "[DISHONEST NODE " << id << "]: " << "Notarizing block with hash " << block.hash();
 
         trees[k].notarize(block);

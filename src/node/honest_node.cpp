@@ -86,7 +86,7 @@ void HonestNode::handleVote(const Message& message) {
 
     votes[epoch].insert(message.from());
 
-    if (3 * votes[epoch].size() >= 2 * numOfNodes) {
+    if (3 * votes[epoch].size() > 2 * numOfNodes) {
         LOG(DEBUG) << "[HONEST NODE " << id << "]: " << "Notarizing block with hash " << block.hash();
         tree.notarize(block);
     }
